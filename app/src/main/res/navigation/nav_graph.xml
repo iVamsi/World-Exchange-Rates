@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/allCurrenciesFragment">
+    <fragment
+        android:id="@+id/allCurrenciesFragment"
+        android:name="com.vamsi.xchangerates.app.ui.AllCurrencies"
+        tools:layout="@layout/fragment_all_currencies"/>
+
+    <fragment
+        android:id="@+id/favoriteCurrenciesFragment"
+        android:name="com.vamsi.xchangerates.app.ui.FavoriteCurrencies"
+        tools:layout="@layout/fragment_favorite_currencies"/>
+
+    <fragment
+        android:id="@+id/currencyConverterFragment"
+        android:name="com.vamsi.xchangerates.app.ui.CurrencyConverter"
+        tools:layout="@layout/fragment_currency_converter"/>
+
+</navigation>
