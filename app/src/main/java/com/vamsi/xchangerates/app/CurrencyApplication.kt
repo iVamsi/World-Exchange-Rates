@@ -7,7 +7,6 @@ import com.vamsi.xchangerates.app.di.ContextModule
 import com.vamsi.xchangerates.app.di.DaggerAppComponent
 import com.vamsi.xchangerates.app.di.DatabaseModule
 import com.vamsi.xchangerates.app.di.ServiceModule
-import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -33,11 +32,7 @@ class CurrencyApplication : Application(), HasActivityInjector
             .inject(this)
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityInjector
-    }
+    override fun activityInjector() = activityInjector
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return supportFragmentInjector
-    }
+    override fun supportFragmentInjector() = supportFragmentInjector
 }

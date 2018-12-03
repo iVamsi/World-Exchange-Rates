@@ -11,5 +11,10 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(context: Context) = AppDatabase.getInstance(context)
+    fun provideAppDatabase(context: Context) = AppDatabase.buildDatabase(context)
+
+
+    @Singleton
+    @Provides
+    fun provideCurrencyDao(appDatabase: AppDatabase) = appDatabase.currencyDao()
 }

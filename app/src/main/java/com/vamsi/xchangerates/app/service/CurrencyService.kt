@@ -14,6 +14,12 @@ interface CurrencyService {
     @GET(LIVE)
     fun requestUpdatedCurrencies(
         @Query(ACCESS_KEY) accessKey: String,
+        @Query(FORMAT) format: String
+    ): Observable<CurrencyResponse>
+
+    @GET(LIVE)
+    fun getCurrencyValue(
+        @Query(ACCESS_KEY) accessKey: String,
         @Query(CURRENCIES) currencies: String,
         @Query(FORMAT) format: String
     ): Observable<CurrencyResponse>

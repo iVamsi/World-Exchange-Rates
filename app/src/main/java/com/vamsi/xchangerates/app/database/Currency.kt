@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.vamsi.xchangerates.app.utils.TABLE_CURRENCIES
 
 @Entity(tableName = TABLE_CURRENCIES)
-data class CurrencyEntity(
+data class Currency(
     @PrimaryKey(autoGenerate = true) val id: Long,
     var currencyId: String,
     var currencyName: String,

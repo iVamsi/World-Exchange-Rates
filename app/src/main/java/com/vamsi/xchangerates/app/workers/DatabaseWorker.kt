@@ -7,16 +7,16 @@ import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.vamsi.xchangerates.app.database.AppDatabase
 import com.vamsi.xchangerates.app.database.Currency
+import com.vamsi.xchangerates.app.database.CurrencyDao
 import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
 import javax.inject.Inject
 
-class CurrencyDatabaseWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
-    private val TAG by lazy { CurrencyDatabaseWorker::class.java.simpleName }
+class DatabaseWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
+    private val TAG by lazy { DatabaseWorker::class.java.simpleName }
 
     @Inject
-    lateinit var database: AppDatabase
+    lateinit var currencyDao: CurrencyDao
 
     override fun doWork(): Result {
         val currencyType = object : TypeToken<List<Currency>>() {}.type
@@ -26,7 +26,7 @@ class CurrencyDatabaseWorker(context: Context, workerParams: WorkerParameters) :
             val inputStream = applicationContext.assets.open(CURRENCY_DATA_FILENAME)
             jsonReader = JsonReader(inputStream.reader())
             val currencyList: List<Currency> = Gson().fromJson(jsonReader, currencyType)
-            database.currencyDao().insertAll(currencyList)
+            currencyDao.insertAll(currencyList)
             Result.SUCCESS
         } catch (ex: Exception) {
             Log.e(TAG, "Error populating database", ex)
