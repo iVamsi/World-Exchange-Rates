@@ -2,6 +2,7 @@ package com.vamsi.xchangerates.app.workers
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Result
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
@@ -26,11 +27,12 @@ class CurrencyDatabaseWorker(context: Context, workerParams: WorkerParameters) :
             val inputStream = applicationContext.assets.open(CURRENCY_DATA_FILENAME)
             jsonReader = JsonReader(inputStream.reader())
             val currencyList: List<Currency> = Gson().fromJson(jsonReader, currencyType)
-            database.currencyDao().insertAll(currencyList)
-            Result.SUCCESS
+            val db = AppDatabase.getInstance(applicationContext)
+            db.currencyDao().insertAllCurrencies(currencyList)
+            Result.success()
         } catch (ex: Exception) {
             Log.e(TAG, "Error populating database", ex)
-            Result.FAILURE
+            Result.failure()
         } finally {
             jsonReader?.close()
         }

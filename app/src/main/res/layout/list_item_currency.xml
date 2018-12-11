@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="currency"
-            type="com.vamsi.xchangerates.app.database.Currency"/>
+            type="com.vamsi.xchangerates.app.database.CurrencyDao.CurrencyUIModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@{currency.currencyId}"
+            android:text="@{currency.currId}"
             app:layout_constraintBottom_toTopOf="@+id/currency_name"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="@{currency.currencyName}"
+            android:text="@{currency.currName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/currency_code"/>
@@ -54,7 +54,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@{Double.toString(currency.currencyValue)}"
+            android:text="@{Double.toString(currency.currValue)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

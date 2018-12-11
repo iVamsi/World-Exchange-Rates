@@ -11,6 +11,6 @@ class ContextModule(private val currencyApplication: CurrencyApplication) {
 
     @Singleton
     @Provides
-    fun provideContext(): Context = currencyApplication
+    fun provideContext(): Context = currencyApplication.applicationContext
 
 }

@@ -1,10 +1,14 @@
 package com.vamsi.xchangerates.app.viewmodels
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vamsi.xchangerates.app.database.Currency
+import com.vamsi.xchangerates.app.database.CurrencyDao
 import com.vamsi.xchangerates.app.database.CurrencyRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -14,11 +18,35 @@ class AllCurrenciesViewModel @Inject constructor(
     currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private var currencyList: LiveData<List<Currency>> = MutableLiveData<List<Currency>>()
+    private var currencyList = MutableLiveData<List<CurrencyDao.CurrencyUIModel>>()
+    private val compositeDisposable = CompositeDisposable()
 
     init {
-        currencyList = currencyRepository.requestUpdatedCurrencies()
+        compositeDisposable.add(currencyRepository
+            .getUpdatedCurrencies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : DisposableObserver<List<CurrencyDao.CurrencyUIModel>>() {
+
+                override fun onError(e: Throwable) {
+                    Log.e("AllCurrenciesViewModel", e.stackTrace.toString())
+                }
+
+                override fun onNext(data: List<CurrencyDao.CurrencyUIModel>) {
+                    currencyList.value = data
+                }
+
+                override fun onComplete() {
+
+                }
+            })
+        )
     }
 
     fun getCurrencyList() = currencyList
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
 }
