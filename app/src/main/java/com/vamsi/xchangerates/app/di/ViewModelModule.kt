@@ -2,8 +2,8 @@ package com.vamsi.xchangerates.app.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.vamsi.xchangerates.app.viewmodels.AllCurrenciesViewModel
-import com.vamsi.xchangerates.app.viewmodels.CurrencyViewModelFactory
+import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
+import com.vamsi.xchangerates.app.view.viewmodels.CurrencyViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

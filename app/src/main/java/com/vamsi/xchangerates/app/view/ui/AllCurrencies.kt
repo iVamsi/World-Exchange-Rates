@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.ui
+package com.vamsi.xchangerates.app.view.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -11,10 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vamsi.xchangerates.app.R
-import com.vamsi.xchangerates.app.adapters.CurrencyAdapter
 import com.vamsi.xchangerates.app.databinding.FragmentAllCurrenciesBinding
 import com.vamsi.xchangerates.app.utils.autoCleared
-import com.vamsi.xchangerates.app.viewmodels.AllCurrenciesViewModel
+import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
+import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

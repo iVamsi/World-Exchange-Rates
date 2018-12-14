@@ -1,7 +1,7 @@
 package com.vamsi.xchangerates.app.di
 
 import android.content.Context
-import com.vamsi.xchangerates.app.database.AppDatabase
+import com.vamsi.xchangerates.app.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

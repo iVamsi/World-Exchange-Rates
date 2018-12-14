@@ -1,7 +1,10 @@
-package com.vamsi.xchangerates.app.database
+package com.vamsi.xchangerates.app.data.repository
 
+import com.vamsi.xchangerates.app.data.local.AppDatabase
+import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
+import com.vamsi.xchangerates.app.data.remote.CurrencyDataSource
 import com.vamsi.xchangerates.app.model.CurrencyResponse
-import com.vamsi.xchangerates.app.service.CurrencyDataSource
+import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -22,22 +25,22 @@ class CurrencyRepository @Inject constructor(
 
     fun getCurrency(currencyId: String) = appDatabase.currencyDao().getCurrency(currencyId)
 
-    fun getUpdatedCurrencies(): Observable<List<CurrencyDao.CurrencyUIModel>> {
+    fun getUpdatedCurrencies(): Observable<List<CurrencyUIModel>> {
         return getCurrenciesFromNetwork()
     }
 
-    fun getCurrenciesFromNetwork(): Observable<List<CurrencyDao.CurrencyUIModel>> {
+    fun getCurrenciesFromNetwork(): Observable<List<CurrencyUIModel>> {
         return currencyDataSource.requestUpdatedCurrencies().flatMap {
             return@flatMap saveCurrencyResponse(it)
         }
     }
 
-    fun saveCurrencyResponse(currencyResponse: CurrencyResponse): Observable<List<CurrencyDao.CurrencyUIModel>> {
+    fun saveCurrencyResponse(currencyResponse: CurrencyResponse): Observable<List<CurrencyUIModel>> {
         insertCurrencyResponse(currencyResponse)
         return getCurrenciesFromDatabase()
     }
 
-    fun getCurrenciesFromDatabase(): Observable<List<CurrencyDao.CurrencyUIModel>> {
+    fun getCurrenciesFromDatabase(): Observable<List<CurrencyUIModel>> {
         return appDatabase.currencyDao().getCurrenciesForUI().toObservable()
     }
 
@@ -45,7 +48,13 @@ class CurrencyRepository @Inject constructor(
 //        Schedulers.io().scheduleDirect {
             val currencyList = ArrayList<CurrencyResponseEntity>()
             currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
-                currencyList.add(CurrencyResponseEntity(currId.substring(3), currValue))
+                currencyList.add(
+                    CurrencyResponseEntity(
+                        currId.substring(
+                            3
+                        ), currValue
+                    )
+                )
 
             }
             appDatabase.currencyDao().updateCurrencies(currencyList)

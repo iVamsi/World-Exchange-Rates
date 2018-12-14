@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.service
+package com.vamsi.xchangerates.app.data.remote
 
 import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.utils.ACCESS_KEY

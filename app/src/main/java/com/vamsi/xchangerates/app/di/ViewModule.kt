@@ -1,9 +1,9 @@
 package com.vamsi.xchangerates.app.di
 
-import com.vamsi.xchangerates.app.ui.AllCurrencies
-import com.vamsi.xchangerates.app.ui.CurrencyConverter
-import com.vamsi.xchangerates.app.ui.FavoriteCurrencies
-import com.vamsi.xchangerates.app.ui.MainActivity
+import com.vamsi.xchangerates.app.view.ui.AllCurrencies
+import com.vamsi.xchangerates.app.view.ui.CurrencyConverter
+import com.vamsi.xchangerates.app.view.ui.FavoriteCurrencies
+import com.vamsi.xchangerates.app.view.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

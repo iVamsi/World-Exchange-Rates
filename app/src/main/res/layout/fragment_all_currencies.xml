@@ -8,7 +8,7 @@
 
             <variable
                 name="viewModel"
-                type="com.vamsi.xchangerates.app.viewmodels.AllCurrenciesViewModel"/>
+                type="com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel"/>
         </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

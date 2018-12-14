@@ -1,17 +1,17 @@
-package com.vamsi.xchangerates.app.adapters
+package com.vamsi.xchangerates.app.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vamsi.xchangerates.app.database.CurrencyDao
 import com.vamsi.xchangerates.app.databinding.ListItemCurrencyBinding
+import com.vamsi.xchangerates.app.model.CurrencyUIModel
 
 /**
  * Adapter for the [RecyclerView] in [AllCurrencies] fragment.
  */
-class CurrencyAdapter : ListAdapter<CurrencyDao.CurrencyUIModel, CurrencyAdapter.ViewHolder>(CurrencyDiffCallback()) {
+class CurrencyAdapter : ListAdapter<CurrencyUIModel, CurrencyAdapter.ViewHolder>(CurrencyDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currency = getItem(position)
@@ -36,7 +36,7 @@ class CurrencyAdapter : ListAdapter<CurrencyDao.CurrencyUIModel, CurrencyAdapter
         private val binding: ListItemCurrencyBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listener: View.OnClickListener, item: CurrencyDao.CurrencyUIModel) {
+        fun bind(listener: View.OnClickListener, item: CurrencyUIModel) {
             binding.apply {
                 clickListener = listener
                 currency = item

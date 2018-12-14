@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="currency"
-            type="com.vamsi.xchangerates.app.database.CurrencyDao.CurrencyUIModel"/>
+            type="com.vamsi.xchangerates.app.model.CurrencyUIModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

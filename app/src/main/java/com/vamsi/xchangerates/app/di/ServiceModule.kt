@@ -2,7 +2,7 @@ package com.vamsi.xchangerates.app.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.vamsi.xchangerates.app.service.CurrencyService
+import com.vamsi.xchangerates.app.data.remote.CurrencyService
 import com.vamsi.xchangerates.app.utils.BASE_API_LAYER
 import dagger.Module
 import dagger.Provides

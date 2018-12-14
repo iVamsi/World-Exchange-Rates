@@ -8,8 +8,8 @@ import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.vamsi.xchangerates.app.database.AppDatabase
-import com.vamsi.xchangerates.app.database.Currency
+import com.vamsi.xchangerates.app.data.local.AppDatabase
+import com.vamsi.xchangerates.app.data.local.Currency
 import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
 import javax.inject.Inject
 

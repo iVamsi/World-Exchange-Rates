@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.database
+package com.vamsi.xchangerates.app.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.database
+package com.vamsi.xchangerates.app.data.local
 
 import android.content.Context
 import androidx.room.Database

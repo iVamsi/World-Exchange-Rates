@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.ui
+package com.vamsi.xchangerates.app.view.ui
 
 import android.content.Context
 import android.os.Bundle

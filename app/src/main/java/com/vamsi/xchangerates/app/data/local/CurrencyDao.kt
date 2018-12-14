@@ -1,11 +1,8 @@
-package com.vamsi.xchangerates.app.database
+package com.vamsi.xchangerates.app.data.local
 
 import androidx.room.*
+import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import io.reactivex.Flowable
-
-
-
-
 
 /**
  * The Data Access Object for the Currency class.
@@ -49,7 +46,4 @@ interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCurrencyResponse(currencyResponseEntity: CurrencyResponseEntity)
 
-    data class CurrencyUIModel(var currId: String,
-                               var currName: String,
-                               var currValue: Double)
 }
