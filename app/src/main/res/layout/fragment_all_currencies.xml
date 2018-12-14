@@ -2,15 +2,38 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
+        <data>
+
+            <import type="android.view.View"/>
+
+            <variable
+                name="viewModel"
+                type="com.vamsi.xchangerates.app.viewmodels.AllCurrenciesViewModel"/>
+        </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="@dimen/progress_bar_height"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/currency_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
+            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
             android:paddingLeft="@dimen/margin_normal"
             android:paddingRight="@dimen/margin_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

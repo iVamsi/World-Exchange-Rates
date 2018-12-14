@@ -52,6 +52,9 @@ class AllCurrencies : Fragment() {
         allCurrenciesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AllCurrenciesViewModel::class.java)
         val adapter = CurrencyAdapter()
+        binding.viewModel = allCurrenciesViewModel
+        binding.executePendingBindings()
+
         binding.currencyList.adapter = adapter
         subscribeUi(adapter)
     }
