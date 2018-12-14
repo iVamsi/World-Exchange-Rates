@@ -29,7 +29,6 @@ class AllCurrencies : DaggerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val dataBinding = DataBindingUtil.inflate<FragmentAllCurrenciesBinding>(
             inflater,
             R.layout.fragment_all_currencies,

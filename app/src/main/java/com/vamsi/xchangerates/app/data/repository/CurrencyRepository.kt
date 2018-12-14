@@ -5,6 +5,7 @@ import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
 import com.vamsi.xchangerates.app.data.remote.CurrencyDataSource
 import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
+import com.vamsi.xchangerates.app.utils.NetworkUtils
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -19,6 +20,8 @@ class CurrencyRepository @Inject constructor(
     private val currencyDataSource: CurrencyDataSource
 ) {
 
+    @Inject lateinit var networkUtils: NetworkUtils
+
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
 
     fun getCurrencies() = appDatabase.currencyDao().getCurrencies()
@@ -30,9 +33,14 @@ class CurrencyRepository @Inject constructor(
     }
 
     fun getCurrenciesFromNetwork(): Observable<List<CurrencyUIModel>> {
-        return currencyDataSource.requestUpdatedCurrencies().flatMap {
-            return@flatMap saveCurrencyResponse(it)
+        networkUtils.isConnectedToInternet?.let {
+            if (it) {
+                return currencyDataSource.requestUpdatedCurrencies().flatMap {
+                    return@flatMap saveCurrencyResponse(it)
+                }
+            }
         }
+        return getCurrenciesFromDatabase()
     }
 
     fun saveCurrencyResponse(currencyResponse: CurrencyResponse): Observable<List<CurrencyUIModel>> {
@@ -45,7 +53,6 @@ class CurrencyRepository @Inject constructor(
     }
 
     fun insertCurrencyResponse(currencyResponse: CurrencyResponse) {
-//        Schedulers.io().scheduleDirect {
             val currencyList = ArrayList<CurrencyResponseEntity>()
             currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
                 currencyList.add(
@@ -55,9 +62,7 @@ class CurrencyRepository @Inject constructor(
                         ), currValue
                     )
                 )
-
             }
             appDatabase.currencyDao().updateCurrencies(currencyList)
-//        }
     }
 }
