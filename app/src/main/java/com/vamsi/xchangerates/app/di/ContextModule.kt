@@ -6,10 +6,10 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class ContextModule(private val currencyApplication: CurrencyApplication) {
+class ContextModule() {
 
     @Singleton
     @Provides
-    fun provideContext(): Context = currencyApplication.applicationContext
+    fun provideContext(application: CurrencyApplication): Context = application.applicationContext
 
 }

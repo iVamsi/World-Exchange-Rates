@@ -26,7 +26,7 @@ class CurrencyAdapter : ListAdapter<CurrencyUIModel, CurrencyAdapter.ViewHolder>
             LayoutInflater.from(parent.context), parent, false))
     }
 
-    private fun createOnClickListener(plantId: String): View.OnClickListener {
+    private fun createOnClickListener(currencyId: String): View.OnClickListener {
         return View.OnClickListener {
             println("Row clicked")
         }

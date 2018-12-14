@@ -1,20 +1,13 @@
 package com.vamsi.xchangerates.app.view.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.vamsi.xchangerates.app.R
-import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 
-class CurrencyConverter : Fragment() {
-
-    override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+class CurrencyConverter : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
