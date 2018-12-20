@@ -17,8 +17,8 @@
 
         <ProgressBar
             android:id="@+id/loading"
-            android:layout_width="@dimen/progress_bar_width"
-            android:layout_height="@dimen/progress_bar_height"
+            android:layout_width="@dimen/image_min_width"
+            android:layout_height="@dimen/image_min_height"
             android:layout_marginBottom="@dimen/margin_small"
             android:indeterminate="true"
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
@@ -34,8 +34,8 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
-            android:paddingLeft="@dimen/margin_normal"
-            android:paddingRight="@dimen/margin_normal"
+            android:paddingStart="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_small"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_currency"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,4 +5,5 @@
     <string name="title_converter">Converter</string>
 
     <string name="country_flag">Country Flag</string>
+    <string name="currency_value">%.02f</string>
 </resources>
