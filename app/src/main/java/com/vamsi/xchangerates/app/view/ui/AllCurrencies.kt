@@ -8,13 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.vamsi.xchangerates.app.R
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.vamsi.xchangerates.app.databinding.FragmentAllCurrenciesBinding
 import com.vamsi.xchangerates.app.utils.autoCleared
 import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
+
 
 class AllCurrencies : DaggerFragment() {
 
@@ -31,7 +33,7 @@ class AllCurrencies : DaggerFragment() {
     ): View? {
         val dataBinding = DataBindingUtil.inflate<FragmentAllCurrenciesBinding>(
             inflater,
-            R.layout.fragment_all_currencies,
+            com.vamsi.xchangerates.app.R.layout.fragment_all_currencies,
             container,
             false
         )
@@ -47,6 +49,12 @@ class AllCurrencies : DaggerFragment() {
         binding.viewModel = allCurrenciesViewModel
         binding.executePendingBindings()
 
+        binding.currencyList.addItemDecoration(
+            DividerItemDecoration(
+                context!!,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         binding.currencyList.adapter = adapter
         subscribeUi(adapter)
     }

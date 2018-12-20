@@ -3,4 +3,6 @@
     <string name="title_all_currencies">All currencies</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_converter">Converter</string>
+
+    <string name="country_flag">Country Flag</string>
 </resources>
