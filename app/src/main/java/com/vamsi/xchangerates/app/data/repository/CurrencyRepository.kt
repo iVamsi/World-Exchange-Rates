@@ -28,6 +28,10 @@ class CurrencyRepository @Inject constructor(
 
     fun getCurrency(currencyId: String) = appDatabase.currencyDao().getCurrency(currencyId)
 
+    fun getCurrencyFavorites(): Observable<List<CurrencyUIModel>> {
+        return getCurrencyFavoritesFromDb()
+    }
+
     fun getUpdatedCurrencies(): Observable<List<CurrencyUIModel>> {
         return getCurrenciesFromNetwork()
     }
@@ -50,6 +54,10 @@ class CurrencyRepository @Inject constructor(
 
     fun getCurrenciesFromDatabase(): Observable<List<CurrencyUIModel>> {
         return appDatabase.currencyDao().getCurrenciesForUI().toObservable()
+    }
+
+    fun getCurrencyFavoritesFromDb(): Observable<List<CurrencyUIModel>> {
+        return appDatabase.currencyDao().getCurrencyFavoritesForUI().toObservable()
     }
 
     fun insertCurrencyResponse(currencyResponse: CurrencyResponse) {

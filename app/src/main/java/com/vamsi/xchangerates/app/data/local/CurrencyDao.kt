@@ -15,6 +15,9 @@ interface CurrencyDao {
     @Query("SELECT * FROM currencies WHERE id = :currencyId")
     fun getCurrency(currencyId: String): Flowable<Currency>
 
+    @Query("SELECT * FROM currencies WHERE currencyFavorite = 'yes'")
+    fun getFavorites(): Flowable<List<Currency>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(currencies: List<CurrencyResponseEntity>)
 
@@ -36,12 +39,22 @@ interface CurrencyDao {
     @Query("DELETE FROM currencyresponse")
     fun deleteAllCurrencies()
 
-    @Query(
-        "SELECT currencies.currencyId AS currId, currencies.currencyName AS currName, currencyresponse.currencyValue AS currValue " +
-                "FROM currencies, currencyresponse " +
-                "WHERE currencies.currencyId = currencyresponse.currencyId"
+    @Query("""
+        SELECT currencies.currencyId AS currId, currencies.currencyName AS currName, currencyresponse.currencyValue AS currValue
+                FROM currencies, currencyresponse
+                WHERE currencies.currencyId = currencyresponse.currencyId
+    """
     )
     fun getCurrenciesForUI(): Flowable<List<CurrencyUIModel>>
+
+    @Query("""
+        SELECT currencies.currencyId AS currId, currencies.currencyName AS currName, currencyresponse.currencyValue AS currValue
+                FROM currencies, currencyresponse
+                WHERE currencies.currencyId = currencyresponse.currencyId
+                AND currencies.currencyFavorite = 'yes'
+    """
+    )
+    fun getCurrencyFavoritesForUI(): Flowable<List<CurrencyUIModel>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCurrencyResponse(currencyResponseEntity: CurrencyResponseEntity)

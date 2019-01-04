@@ -4,14 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.vamsi.xchangerates.app.R
+import com.vamsi.xchangerates.app.databinding.FragmentFavoriteCurrenciesBinding
+import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
+import com.vamsi.xchangerates.app.view.viewmodels.FavoriteCurrenciesViewModel
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class FavoriteCurrencies : DaggerFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_currencies, container, false)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var favoriteCurrenciesViewModel: FavoriteCurrenciesViewModel
+
+    lateinit var binding: FragmentFavoriteCurrenciesBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val dataBinding = DataBindingUtil.inflate<FragmentFavoriteCurrenciesBinding>(
+            inflater,
+            R.layout.fragment_favorite_currencies,
+            container,
+            false
+        )
+
+        binding = dataBinding
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        favoriteCurrenciesViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(FavoriteCurrenciesViewModel::class.java)
+        val adapter = CurrencyAdapter()
+        binding.viewModel = favoriteCurrenciesViewModel
+        binding.executePendingBindings()
+
+        binding.currencyList.addItemDecoration(
+            DividerItemDecoration(
+                context!!,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+        binding.currencyList.adapter = adapter
+        subscribeUi(adapter)
+    }
+
+    private fun subscribeUi(adapter: CurrencyAdapter) {
+        favoriteCurrenciesViewModel.getCurrencyList().observe(viewLifecycleOwner, Observer { currencyList ->
+            if (currencyList != null) adapter.submitList(currencyList)
+        })
     }
 }
