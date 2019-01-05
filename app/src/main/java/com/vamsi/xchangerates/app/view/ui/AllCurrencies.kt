@@ -16,8 +16,6 @@ import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-
-
 class AllCurrencies : DaggerFragment() {
 
     @Inject

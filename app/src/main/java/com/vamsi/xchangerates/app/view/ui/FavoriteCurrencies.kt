@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.vamsi.xchangerates.app.R
 import com.vamsi.xchangerates.app.databinding.FragmentFavoriteCurrenciesBinding
+import com.vamsi.xchangerates.app.utils.autoCleared
 import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.FavoriteCurrenciesViewModel
 import dagger.android.support.DaggerFragment
@@ -23,7 +24,7 @@ class FavoriteCurrencies : DaggerFragment() {
 
     lateinit var favoriteCurrenciesViewModel: FavoriteCurrenciesViewModel
 
-    lateinit var binding: FragmentFavoriteCurrenciesBinding
+    var binding by autoCleared<FragmentFavoriteCurrenciesBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
