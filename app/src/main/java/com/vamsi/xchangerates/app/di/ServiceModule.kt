@@ -6,6 +6,7 @@ import com.vamsi.xchangerates.app.data.remote.CurrencyService
 import com.vamsi.xchangerates.app.utils.BASE_API_LAYER
 import dagger.Module
 import dagger.Provides
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,6 +28,10 @@ class ServiceModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
+            .certificatePinner(CertificatePinner.Builder().add(
+                "apilayer.net",
+                "sha256/5GptIJcpaBOtept1Bg5CKl/IIKrFnopuFQMnaNwOvKw="
+            ).build())
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
