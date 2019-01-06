@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/dimen_10dp"
+                  android:layout_marginTop="@dimen/dimen_10dp"
+                  android:layout_marginRight="@dimen/dimen_10dp"
+                  android:orientation="horizontal"
+                  android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/leftCurrencyLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:background="@drawable/background_base_fragment"
+            android:gravity="center"
+            android:padding="@dimen/dimen_5dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/leftCurrencyFlag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                app:srcCompat="@drawable/flag_inr"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/leftCurrencyId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/leftCurrencyFlag"
+                android:layout_alignBottom="@+id/leftCurrencyFlag"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_toEndOf="@+id/leftCurrencyFlag"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="INR"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/converterImage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:padding="5dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_launcher_foreground"/>
+
+        <RelativeLayout
+            android:id="@+id/rightCurrencyLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.4"
+            android:background="@drawable/background_base_fragment"
+            android:gravity="center"
+            android:padding="@dimen/dimen_2dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/rightCurrencyFlag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                app:srcCompat="@drawable/flag_usd"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/rightCurrencyId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/rightCurrencyFlag"
+                android:layout_alignBottom="@+id/rightCurrencyFlag"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_toEndOf="@+id/rightCurrencyFlag"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="USD"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="1">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/leftCurrencyValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@null"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rightCurrencyValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/Black"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
