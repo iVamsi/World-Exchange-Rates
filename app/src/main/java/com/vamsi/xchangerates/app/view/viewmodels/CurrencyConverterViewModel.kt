@@ -1,7 +1,6 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.vamsi.xchangerates.app.data.repository.CurrencyRepository
@@ -22,27 +21,22 @@ class CurrencyConverterViewModel @Inject constructor(
     private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
     private val compositeDisposable = CompositeDisposable()
 
-    var isLoading = ObservableField(false)
-
     init {
-        isLoading.set(true)
         compositeDisposable.add(currencyRepository
-            .getUpdatedCurrencies()
+            .getCurrenciesFromDatabase()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
 
                 override fun onError(e: Throwable) {
-                    Log.e("AllCurrenciesViewModel", e.stackTrace.toString())
+                    Log.e("CurrConverterViewModel", e.stackTrace.toString())
                 }
 
                 override fun onNext(data: List<CurrencyUIModel>) {
-                    isLoading.set(false)
                     currencyList.value = data
                 }
 
                 override fun onComplete() {
-                    isLoading.set(false)
                 }
             })
         )

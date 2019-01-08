@@ -5,11 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.vamsi.xchangerates.app.databinding.ListItemCurrencyBinding
+import com.vamsi.xchangerates.app.databinding.DialogListItemCurrencyBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 
 /**
- * Adapter for the [RecyclerView] in [AllCurrencies] fragment.
+ * Adapter for the [RecyclerView] in [CurrencyConverter] fragment.
  */
 class CurrencyListAdapter : ListAdapter<CurrencyUIModel, CurrencyListAdapter.ViewHolder>(CurrencyDiffCallback()) {
 
@@ -22,7 +22,8 @@ class CurrencyListAdapter : ListAdapter<CurrencyUIModel, CurrencyListAdapter.Vie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ListItemCurrencyBinding.inflate(
+        return ViewHolder(
+            DialogListItemCurrencyBinding.inflate(
             LayoutInflater.from(parent.context), parent, false))
     }
 
@@ -33,7 +34,7 @@ class CurrencyListAdapter : ListAdapter<CurrencyUIModel, CurrencyListAdapter.Vie
     }
 
     class ViewHolder(
-        private val binding: ListItemCurrencyBinding
+        private val binding: DialogListItemCurrencyBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(listener: View.OnClickListener, item: CurrencyUIModel) {

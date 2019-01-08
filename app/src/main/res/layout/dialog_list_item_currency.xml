@@ -13,7 +13,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_2dp"
         android:onClick="@{clickListener}">
@@ -52,20 +52,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/currency_code"
             tools:text="Indian Rupee"/>
-        <TextView
-            android:id="@+id/currency_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text="@{@string/currency_value(currency.currValue)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="70.27"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
