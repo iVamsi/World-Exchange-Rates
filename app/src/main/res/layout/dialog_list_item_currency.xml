@@ -6,7 +6,7 @@
     <data>
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"/>
+            type="com.vamsi.xchangerates.app.utils.OnClickHandler"/>
         <variable
             name="currency"
             type="com.vamsi.xchangerates.app.model.CurrencyUIModel"/>
@@ -16,9 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_2dp"
-        android:onClick="@{clickListener}">
+        android:onClick="@{(v) -> clickListener.onItemClicked(v, currency.currId)}">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
             android:layout_width="@dimen/image_min_width"
             android:layout_height="@dimen/image_min_height"
@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/flag_inr"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/currency_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="INR"/>
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/currency_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

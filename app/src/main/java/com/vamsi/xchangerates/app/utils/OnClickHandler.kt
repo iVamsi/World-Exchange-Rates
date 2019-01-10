@@ -4,4 +4,5 @@ import android.view.View
 
 interface OnClickHandler {
     fun onClick(view: View)
+    fun onItemClicked(view: View, currencyId: String)
 }

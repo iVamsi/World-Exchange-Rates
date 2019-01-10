@@ -6,9 +6,9 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.vamsi.xchangerates.app.R
@@ -16,7 +16,7 @@ import java.util.*
 
 object BindingAdapters {
     @BindingAdapter("imageUrl")
-    @JvmStatic fun bindImage(view: ImageView, fileName: String) {
+    @JvmStatic fun bindImage(view: AppCompatImageView, fileName: String) {
         val imageUrl = "flag_".plus(fileName.toLowerCase(Locale.US))
         Glide.with(view.context).load(view.context
             .resources

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="clickHandler"
             type="com.vamsi.xchangerates.app.utils.OnClickHandler" />
+        <variable name="leftCurrencyCode" type="String" />
+        <variable name="rightCurrencyCode" type="String" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,8 +36,9 @@
                     android:id="@+id/leftCurrencyFlag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/flag_inr"/>
+                    android:scaleType="fitXY"
+                    app:imageUrl="@{leftCurrencyCode}"
+                    tools:srcCompat="@drawable/flag_usd" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/leftCurrencyId"
@@ -45,7 +49,8 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/leftCurrencyFlag"
                     android:gravity="center"
-                    android:text="INR"
+                    android:text="@{leftCurrencyCode}"
+                    tools:text="USD"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             </RelativeLayout>
@@ -74,8 +79,9 @@
                     android:id="@+id/rightCurrencyFlag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/flag_usd"/>
+                    android:scaleType="fitXY"
+                    app:imageUrl="@{rightCurrencyCode}"
+                    tools:srcCompat="@drawable/flag_inr"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/rightCurrencyId"
@@ -86,7 +92,8 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/rightCurrencyFlag"
                     android:gravity="center"
-                    android:text="USD"
+                    android:text="@{rightCurrencyCode}"
+                    tools:text="INR"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             </RelativeLayout>

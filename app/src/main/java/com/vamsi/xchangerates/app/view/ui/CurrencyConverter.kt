@@ -4,25 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import com.vamsi.xchangerates.app.R
 import com.vamsi.xchangerates.app.databinding.FragmentCurrencyConverterBinding
+import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
 import com.vamsi.xchangerates.app.utils.autoCleared
+import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.vamsi.xchangerates.app.R
-import com.vamsi.xchangerates.app.R.*
-import com.vamsi.xchangerates.app.model.CurrencyUIModel
-import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 
 class CurrencyConverter : DaggerFragment(), OnClickHandler {
+    override fun onItemClicked(view: View, currencyId: String) {
+        alertDialog.dismiss()
+        when (view.id) {
+            R.id.leftCurrencyLayout -> binding.converterTopSection.leftCurrencyCode = currencyId
+            R.id.rightCurrencyLayout -> binding.converterTopSection.rightCurrencyCode = currencyId
+        }
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.leftCurrencyLayout -> showCurrencyListDialog()
@@ -47,12 +54,14 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     ): View? {
         val dataBinding = DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
             inflater,
-            layout.fragment_currency_converter,
+            R.layout.fragment_currency_converter,
             container,
             false
         )
 
         binding = dataBinding
+        binding.converterTopSection.leftCurrencyCode = "usd"
+        binding.converterTopSection.rightCurrencyCode = "inr"
         return dataBinding.root
     }
 
@@ -61,7 +70,7 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
             .get(CurrencyConverterViewModel::class.java)
 
         binding.converterTopSection.clickHandler = this
-        val adapter = CurrencyListAdapter()
+        val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
         subscribeUi(adapter)
     }
