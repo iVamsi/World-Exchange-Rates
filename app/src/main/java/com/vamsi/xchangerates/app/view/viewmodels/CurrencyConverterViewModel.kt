@@ -1,10 +1,12 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
 import android.util.Log
+import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.vamsi.xchangerates.app.BR
 import com.vamsi.xchangerates.app.data.repository.CurrencyRepository
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
+import com.vamsi.xchangerates.app.utils.ObservableViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -16,7 +18,25 @@ import javax.inject.Inject
  */
 class CurrencyConverterViewModel @Inject constructor(
     currencyRepository: CurrencyRepository
-) : ViewModel() {
+) : ObservableViewModel() {
+
+    var leftCurrencyCode: String = "USD"
+        @Bindable get() {
+            return field
+        }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.leftCurrencyCode)
+        }
+
+    var rightCurrencyCode: String = "INR"
+        @Bindable get() {
+            return field
+        }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.rightCurrencyCode)
+        }
 
     private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
     private val compositeDisposable = CompositeDisposable()
@@ -43,6 +63,14 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     fun getCurrencyList() = currencyList
+
+    fun onItemClick(isLeft: Boolean, currency: CurrencyUIModel) {
+        if (isLeft) {
+            leftCurrencyCode = currency.currId
+        } else {
+            rightCurrencyCode = currency.currId
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()

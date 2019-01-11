@@ -22,18 +22,27 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CurrencyConverter : DaggerFragment(), OnClickHandler {
-    override fun onItemClicked(view: View, currencyId: String) {
+    lateinit var currency: CurrencyUIModel
+    var isLeftCurrencyClicked = false
+    override fun onItemClicked(currencyId: CurrencyUIModel) {
         alertDialog.dismiss()
-        when (view.id) {
-            R.id.leftCurrencyLayout -> binding.converterTopSection.leftCurrencyCode = currencyId
-            R.id.rightCurrencyLayout -> binding.converterTopSection.rightCurrencyCode = currencyId
+        if (isLeftCurrencyClicked) {
+            currencyConverterViewModel.onItemClick(true, currencyId)
+        } else {
+            currencyConverterViewModel.onItemClick(false, currencyId)
         }
     }
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.leftCurrencyLayout -> showCurrencyListDialog()
-            R.id.rightCurrencyLayout -> showCurrencyListDialog()
+            R.id.leftCurrencyLayout -> {
+                isLeftCurrencyClicked = true
+                showCurrencyListDialog()
+            }
+            R.id.rightCurrencyLayout -> {
+                isLeftCurrencyClicked = false
+                showCurrencyListDialog()
+            }
         }
     }
 
@@ -60,15 +69,13 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
         )
 
         binding = dataBinding
-        binding.converterTopSection.leftCurrencyCode = "usd"
-        binding.converterTopSection.rightCurrencyCode = "inr"
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CurrencyConverterViewModel::class.java)
-
+        binding.converterTopSection.viewModel = currencyConverterViewModel
         binding.converterTopSection.clickHandler = this
         val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)

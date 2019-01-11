@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_2dp"
-        android:onClick="@{(v) -> clickListener.onItemClicked(v, currency.currId)}">
+        android:onClick="@{() -> clickListener.onItemClicked(currency)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView"
