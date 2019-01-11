@@ -5,9 +5,8 @@
     <data>
         <variable name="clickHandler"
                   type="com.vamsi.xchangerates.app.utils.OnClickHandler"/>
-        <variable
-            name="viewModel"
-            type="com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel"/>
+        <variable name="leftCurrencyCode" type="String" />
+        <variable name="rightCurrencyCode" type="String" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +35,7 @@
                     android:layout_width="@dimen/image_min_width"
                     android:layout_height="@dimen/image_min_height"
                     android:scaleType="fitXY"
-                    app:imageUrl="@{viewModel.leftCurrencyCode}"
+                    app:imageUrl="@{leftCurrencyCode}"
                     tools:srcCompat="@drawable/flag_usd"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -48,7 +47,7 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/leftCurrencyFlag"
                     android:gravity="center"
-                    android:text="@{viewModel.leftCurrencyCode}"
+                    android:text="@{leftCurrencyCode}"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     tools:text="USD"/>
 
@@ -79,7 +78,7 @@
                     android:layout_width="@dimen/image_min_width"
                     android:layout_height="@dimen/image_min_height"
                     android:scaleType="fitXY"
-                    app:imageUrl="@{viewModel.rightCurrencyCode}"
+                    app:imageUrl="@{rightCurrencyCode}"
                     tools:srcCompat="@drawable/flag_inr"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -91,7 +90,7 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/rightCurrencyFlag"
                     android:gravity="center"
-                    android:text="@{viewModel.rightCurrencyCode}"
+                    android:text="@{rightCurrencyCode}"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     tools:text="INR"/>
 

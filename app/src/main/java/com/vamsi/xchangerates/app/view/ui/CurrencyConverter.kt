@@ -22,40 +22,17 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CurrencyConverter : DaggerFragment(), OnClickHandler {
-    lateinit var currency: CurrencyUIModel
-    var isLeftCurrencyClicked = false
-    override fun onItemClicked(currencyId: CurrencyUIModel) {
-        alertDialog.dismiss()
-        if (isLeftCurrencyClicked) {
-            currencyConverterViewModel.onItemClick(true, currencyId)
-        } else {
-            currencyConverterViewModel.onItemClick(false, currencyId)
-        }
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.leftCurrencyLayout -> {
-                isLeftCurrencyClicked = true
-                showCurrencyListDialog()
-            }
-            R.id.rightCurrencyLayout -> {
-                isLeftCurrencyClicked = false
-                showCurrencyListDialog()
-            }
-        }
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var currencyConverterViewModel: CurrencyConverterViewModel
-
     var binding by autoCleared<FragmentCurrencyConverterBinding>()
-
     lateinit var currencyUIModel: List<CurrencyUIModel>
-
     lateinit var alertDialog: AlertDialog
+    lateinit var currency: CurrencyUIModel
+
+    var isLeftCurrencyClicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,8 +52,9 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CurrencyConverterViewModel::class.java)
-        binding.converterTopSection.viewModel = currencyConverterViewModel
         binding.converterTopSection.clickHandler = this
+        binding.converterTopSection.leftCurrencyCode = "USD"
+        binding.converterTopSection.rightCurrencyCode = "INR"
         val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
         subscribeUi(adapter)
@@ -113,5 +91,27 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
 
     private fun showCurrencyListDialog() {
         alertDialog.show()
+    }
+
+    override fun onItemClicked(currencyId: String) {
+        alertDialog.dismiss()
+        if (isLeftCurrencyClicked) {
+            binding.converterTopSection.leftCurrencyCode = currencyId
+        } else {
+            binding.converterTopSection.rightCurrencyCode = currencyId
+        }
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.leftCurrencyLayout -> {
+                isLeftCurrencyClicked = true
+                showCurrencyListDialog()
+            }
+            R.id.rightCurrencyLayout -> {
+                isLeftCurrencyClicked = false
+                showCurrencyListDialog()
+            }
+        }
     }
 }
