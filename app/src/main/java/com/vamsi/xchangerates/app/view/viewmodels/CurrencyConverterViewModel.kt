@@ -41,11 +41,19 @@ class CurrencyConverterViewModel @Inject constructor(
             notifyPropertyChanged(BR.rightCurrencyCode)
         }
 
+    var currencyValue: String = "0"
+        @Bindable get() {
+            return field
+        }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.currencyValue)
+            notifyPropertyChanged(BR.convertedValue)
+        }
+
     private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
     private var currencies: List<CurrencyUIModel> = arrayListOf()
     private val compositeDisposable = CompositeDisposable()
-
-    private var currencyValue: Double = 1.0
 
     init {
         compositeDisposable.add(currencyRepository
@@ -80,7 +88,7 @@ class CurrencyConverterViewModel @Inject constructor(
             }
 
             override fun afterTextChanged(s: Editable) {
-                setCurrencyValue(Converter.fromStringToDouble(s.toString()))
+                currencyValue = s.toString()
             }
         }
     }
@@ -102,15 +110,14 @@ class CurrencyConverterViewModel @Inject constructor(
 
     @Bindable
     fun getConvertedValue(): String {
-        val leftCurrencyValue = getCurrencyCodeValue(currencies, leftCurrencyCode)
-        val rightCurrencyValue = getCurrencyCodeValue(currencies, rightCurrencyCode)
-        val converted = currencyValue.times(rightCurrencyValue).div(leftCurrencyValue)
-        return converted.toString()
-    }
-
-    fun setCurrencyValue(value: Double) {
-        currencyValue = value
-        notifyPropertyChanged(BR.convertedValue)
+        val currValue = Converter.fromStringToDouble(currencyValue)
+        return if (currValue == 0.0) "0"
+        else {
+            val leftCurrencyValue = getCurrencyCodeValue(currencies, leftCurrencyCode)
+            val rightCurrencyValue = getCurrencyCodeValue(currencies, rightCurrencyCode)
+            val converted = currValue.times(rightCurrencyValue).div(leftCurrencyValue)
+            converted.toString()
+        }
     }
 
     fun getCurrencyCodeValue(list: List<CurrencyUIModel>, name: String): Double {
