@@ -5,8 +5,9 @@
     <data>
         <variable name="clickHandler"
                   type="com.vamsi.xchangerates.app.utils.OnClickHandler"/>
-        <variable name="leftCurrencyCode" type="String" />
-        <variable name="rightCurrencyCode" type="String" />
+        <variable
+            name="viewModel"
+            type="com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                     android:layout_width="@dimen/image_min_width"
                     android:layout_height="@dimen/image_min_height"
                     android:scaleType="fitXY"
-                    app:imageUrl="@{leftCurrencyCode}"
+                    app:imageUrl="@{viewModel.leftCurrencyCode}"
                     tools:srcCompat="@drawable/flag_usd"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -47,7 +48,7 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/leftCurrencyFlag"
                     android:gravity="center"
-                    android:text="@{leftCurrencyCode}"
+                    android:text="@{viewModel.leftCurrencyCode}"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     tools:text="USD"/>
 
@@ -78,7 +79,7 @@
                     android:layout_width="@dimen/image_min_width"
                     android:layout_height="@dimen/image_min_height"
                     android:scaleType="fitXY"
-                    app:imageUrl="@{rightCurrencyCode}"
+                    app:imageUrl="@{viewModel.rightCurrencyCode}"
                     tools:srcCompat="@drawable/flag_inr"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -90,7 +91,7 @@
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_toEndOf="@+id/rightCurrencyFlag"
                     android:gravity="center"
-                    android:text="@{rightCurrencyCode}"
+                    android:text="@{viewModel.rightCurrencyCode}"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     tools:text="INR"/>
 
@@ -117,8 +118,9 @@
                 android:gravity="center"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                android:text="0"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:text="1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                app:textChangedListener="@{viewModel.currencyTextWatcher}"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rightCurrencyValue"
@@ -127,7 +129,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="0"
+                android:text="@{viewModel.convertedValue}"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/Black"/>
         </LinearLayout>

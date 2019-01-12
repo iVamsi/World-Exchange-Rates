@@ -2,6 +2,7 @@ package com.vamsi.xchangerates.app.utils
 
 import android.content.Context
 import android.os.Build
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -11,8 +12,9 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.vamsi.xchangerates.app.R
 import java.util.*
+
+
 
 object BindingAdapters {
     @BindingAdapter("imageUrl")
@@ -39,11 +41,11 @@ object BindingAdapters {
             val textView = focusedView as TextView
             if (hasFocus) {
                 // Delete contents of the EditText if the focus entered.
-                view.setTag(R.id.previous_value, textView.text)
+                view.setTag(com.vamsi.xchangerates.app.R.id.previous_value, textView.text)
                 textView.text = ""
             } else {
                 if (textView.text.isEmpty()) {
-                    val tag: CharSequence? = textView.getTag(R.id.previous_value) as CharSequence
+                    val tag: CharSequence? = textView.getTag(com.vamsi.xchangerates.app.R.id.previous_value) as CharSequence
                     textView.text = tag ?: ""
                 }
                 // If the focus left, update the listener
@@ -141,5 +143,10 @@ object BindingAdapters {
         } else {
             progressBar.progress = progress
         }
+    }
+
+    @BindingAdapter("textChangedListener")
+    @JvmStatic fun bindTextChangedListener(editText: EditText, watcher: TextWatcher) {
+        editText.addTextChangedListener(watcher)
     }
 }

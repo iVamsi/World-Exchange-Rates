@@ -52,9 +52,8 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CurrencyConverterViewModel::class.java)
+        binding.converterTopSection.viewModel = currencyConverterViewModel
         binding.converterTopSection.clickHandler = this
-        binding.converterTopSection.leftCurrencyCode = "USD"
-        binding.converterTopSection.rightCurrencyCode = "INR"
         val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
         subscribeUi(adapter)
@@ -95,11 +94,7 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
 
     override fun onItemClicked(currencyId: String) {
         alertDialog.dismiss()
-        if (isLeftCurrencyClicked) {
-            binding.converterTopSection.leftCurrencyCode = currencyId
-        } else {
-            binding.converterTopSection.rightCurrencyCode = currencyId
-        }
+        currencyConverterViewModel.onItemClick(isLeftCurrencyClicked, currencyId)
     }
 
     override fun onClick(view: View) {
@@ -114,4 +109,5 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
             }
         }
     }
+
 }
