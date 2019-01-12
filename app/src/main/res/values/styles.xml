@@ -38,10 +38,6 @@
         <item name="android:background">@drawable/keyboard_button_bg</item>
     </style>
 
-    <style name="keyboard_number_button" parent="keyboard_button">
-        <item name="android:tag">number_button</item>
-    </style>
-
     <style name="keyboard_equals_button" parent="keyboard_button">
         <item name="android:textColor">@color/White</item>
         <item name="android:background">@drawable/keyboard_equals_button_bg</item>

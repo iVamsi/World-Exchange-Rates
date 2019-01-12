@@ -119,8 +119,7 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:text="@{viewModel.currencyValue}"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                app:textChangedListener="@{viewModel.currencyTextWatcher}"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rightCurrencyValue"

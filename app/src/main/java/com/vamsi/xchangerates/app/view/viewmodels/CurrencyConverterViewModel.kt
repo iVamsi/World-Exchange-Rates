@@ -97,10 +97,21 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun onItemClick(isLeft: Boolean, currId: String) {
         if (isLeft) {
-            leftCurrencyCode = currId
+            if (leftCurrencyCode != currId) {
+                leftCurrencyCode = currId
+                currencyValue = "0"
+            }
         } else {
-            rightCurrencyCode = currId
+            if (rightCurrencyCode != currId) {
+                rightCurrencyCode = currId
+                currencyValue = "0"
+            }
         }
+    }
+
+    fun updateCurrencyValue(currValue: String) {
+        if (currencyValue == "0") currencyValue = currValue
+        else currencyValue = currencyValue.plus(currValue)
     }
 
     override fun onCleared() {
@@ -116,7 +127,7 @@ class CurrencyConverterViewModel @Inject constructor(
             val leftCurrencyValue = getCurrencyCodeValue(currencies, leftCurrencyCode)
             val rightCurrencyValue = getCurrencyCodeValue(currencies, rightCurrencyCode)
             val converted = currValue.times(rightCurrencyValue).div(leftCurrencyValue)
-            converted.toString()
+            String.format("%.2f", converted)
         }
     }
 

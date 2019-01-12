@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +21,7 @@ import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
 
 class CurrencyConverter : DaggerFragment(), OnClickHandler {
 
@@ -40,7 +42,7 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     ): View? {
         val dataBinding = DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
             inflater,
-            R.layout.fragment_currency_converter,
+            com.vamsi.xchangerates.app.R.layout.fragment_currency_converter,
             container,
             false
         )
@@ -53,6 +55,7 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
         currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CurrencyConverterViewModel::class.java)
         binding.converterTopSection.viewModel = currencyConverterViewModel
+        binding.converterBottomSection.clickHandler = this
         binding.converterTopSection.clickHandler = this
         val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
@@ -72,12 +75,12 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     fun initCurrencyListDialog(adapter: CurrencyListAdapter) {
         val builder = AlertDialog.Builder(context!!)
         val dialogView = layoutInflater.inflate(
-            R.layout.currency_list_layout,
+            com.vamsi.xchangerates.app.R.layout.currency_list_layout,
             null
         ) as View
         builder.setView(dialogView)
         val rv =
-            dialogView.findViewById<View>(R.id.rv_currency_list) as RecyclerView
+            dialogView.findViewById<View>(com.vamsi.xchangerates.app.R.id.rv_currency_list) as RecyclerView
         rv.addItemDecoration(
             DividerItemDecoration(
                 context!!,
@@ -98,12 +101,17 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     }
 
     override fun onClick(view: View) {
+        if (view.tag != null && view.tag == getString(R.string.number_button)) {
+            val enteredNumber = (view as TextView).text.toString()
+            currencyConverterViewModel.updateCurrencyValue(enteredNumber)
+            return
+        }
         when (view.id) {
-            R.id.leftCurrencyLayout -> {
+            com.vamsi.xchangerates.app.R.id.leftCurrencyLayout -> {
                 isLeftCurrencyClicked = true
                 showCurrencyListDialog()
             }
-            R.id.rightCurrencyLayout -> {
+            com.vamsi.xchangerates.app.R.id.rightCurrencyLayout -> {
                 isLeftCurrencyClicked = false
                 showCurrencyListDialog()
             }
