@@ -22,7 +22,6 @@ import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-
 class CurrencyConverter : DaggerFragment(), OnClickHandler {
 
     @Inject
@@ -114,8 +113,11 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
                 isLeftCurrencyClicked = false
                 showCurrencyListDialog()
             }
-            R.id.t9_key_clear, R.id.t9_key_backspace -> {
+            R.id.t9_key_clear -> {
                 updateCurrencyValue(view)
+            }
+            R.id.t9_key_backspace -> {
+                currencyConverterViewModel.updateCurrencyValue(getString(R.string.btn_backspace))
             }
             R.id.converterImage -> {
                 currencyConverterViewModel.swapFromToCurrencies()
@@ -127,5 +129,4 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
         val enteredNumber = (view as TextView).text.toString()
         currencyConverterViewModel.updateCurrencyValue(enteredNumber)
     }
-
 }

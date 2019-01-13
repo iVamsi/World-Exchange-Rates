@@ -94,7 +94,7 @@
                 android:tag="@string/number_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/btn_period"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"/>
 
             <TextView
@@ -104,11 +104,12 @@
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/number_zero"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/t9_key_backspace"
                 style="@style/keyboard_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
-                android:text="@string/btn_backspace"
+                android:src="@drawable/ic_backspace_black_24dp"
+                android:contentDescription="@string/btn_backspace"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
         </TableRow>
 
@@ -119,6 +120,8 @@
                 style="@style/keyboard_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/btn_clear"
+                android:textColor="@color/Black"
+                android:textAllCaps="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView

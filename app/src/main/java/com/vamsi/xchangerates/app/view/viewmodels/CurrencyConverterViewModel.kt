@@ -98,9 +98,9 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun updateCurrencyValue(currValue: String) {
         currencyValue = when {
-            currencyValue == "0" && currValue != "." -> currValue
-            currValue == "Clear" -> "0"
-            currValue == "Back" -> currencyValue.substring(0, currencyValue.length - 1)
+            currencyValue == "0" && currValue != "." && currValue != "C" && currValue != "back"-> currValue
+            currValue == "C" -> "0"
+            currValue == "back" -> currencyValue.substring(0, currencyValue.length - 1)
             else -> currencyValue.plus(currValue)
         }
         if (currencyValue == "") currencyValue = "0"
