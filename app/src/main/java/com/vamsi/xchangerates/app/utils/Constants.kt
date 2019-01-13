@@ -5,7 +5,7 @@ package com.vamsi.xchangerates.app.utils
  */
 
 // Database constants
-const val DATABASE_NAME = "currency-db"
+const val DATABASE_NAME = "currency.db"
 const val TABLE_CURRENCIES = "currencies"
 const val TABLE_CURRENCY_RESPONSE = "currencyresponse"
 const val CURRENCY_DATA_FILENAME = "currencies.json"
