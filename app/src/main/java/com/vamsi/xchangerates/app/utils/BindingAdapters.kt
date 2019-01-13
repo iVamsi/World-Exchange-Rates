@@ -2,7 +2,6 @@ package com.vamsi.xchangerates.app.utils
 
 import android.content.Context
 import android.os.Build
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -143,10 +142,5 @@ object BindingAdapters {
         } else {
             progressBar.progress = progress
         }
-    }
-
-    @BindingAdapter("textChangedListener")
-    @JvmStatic fun bindTextChangedListener(editText: EditText, watcher: TextWatcher) {
-        editText.addTextChangedListener(watcher)
     }
 }

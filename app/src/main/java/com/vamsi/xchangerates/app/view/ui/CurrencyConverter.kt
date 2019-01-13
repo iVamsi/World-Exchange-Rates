@@ -102,20 +102,27 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
 
     override fun onClick(view: View) {
         if (view.tag != null && view.tag == getString(R.string.number_button)) {
-            val enteredNumber = (view as TextView).text.toString()
-            currencyConverterViewModel.updateCurrencyValue(enteredNumber)
+            updateCurrencyValue(view)
             return
         }
         when (view.id) {
-            com.vamsi.xchangerates.app.R.id.leftCurrencyLayout -> {
+            R.id.leftCurrencyLayout -> {
                 isLeftCurrencyClicked = true
                 showCurrencyListDialog()
             }
-            com.vamsi.xchangerates.app.R.id.rightCurrencyLayout -> {
+            R.id.rightCurrencyLayout -> {
                 isLeftCurrencyClicked = false
                 showCurrencyListDialog()
             }
+            R.id.t9_key_clear, R.id.t9_key_backspace -> {
+                updateCurrencyValue(view)
+            }
         }
+    }
+
+    private fun updateCurrencyValue(view: View) {
+        val enteredNumber = (view as TextView).text.toString()
+        currencyConverterViewModel.updateCurrencyValue(enteredNumber)
     }
 
 }

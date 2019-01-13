@@ -1,7 +1,5 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
@@ -77,22 +75,6 @@ class CurrencyConverterViewModel @Inject constructor(
         )
     }
 
-    @Bindable
-    fun getCurrencyTextWatcher(): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                currencyValue = s.toString()
-            }
-        }
-    }
-
     fun getCurrencyList() = currencyList
 
     fun onItemClick(isLeft: Boolean, currId: String) {
@@ -110,8 +92,13 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     fun updateCurrencyValue(currValue: String) {
-        if (currencyValue == "0") currencyValue = currValue
-        else currencyValue = currencyValue.plus(currValue)
+        currencyValue = when {
+            currencyValue == "0" && currValue != "." -> currValue
+            currValue == "Clear" -> "0"
+            currValue == "Back" -> currencyValue.substring(0, currencyValue.length - 1)
+            else -> currencyValue.plus(currValue)
+        }
+        if (currencyValue == "") currencyValue = "0"
     }
 
     override fun onCleared() {
@@ -131,7 +118,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    fun getCurrencyCodeValue(list: List<CurrencyUIModel>, name: String): Double {
+    private fun getCurrencyCodeValue(list: List<CurrencyUIModel>, name: String): Double {
         return if (list.isEmpty()) 0.0
         else list.find { it.currId == name }?.currValue!!
     }
