@@ -117,6 +117,9 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
             R.id.t9_key_clear, R.id.t9_key_backspace -> {
                 updateCurrencyValue(view)
             }
+            R.id.converterImage -> {
+                currencyConverterViewModel.swapFromToCurrencies()
+            }
         }
     }
 

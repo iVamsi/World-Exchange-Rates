@@ -91,6 +91,11 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
+    fun swapFromToCurrencies() {
+        leftCurrencyCode = rightCurrencyCode.also { rightCurrencyCode = leftCurrencyCode }
+        currencyValue = "0"
+    }
+
     fun updateCurrencyValue(currValue: String) {
         currencyValue = when {
             currencyValue == "0" && currValue != "." -> currValue

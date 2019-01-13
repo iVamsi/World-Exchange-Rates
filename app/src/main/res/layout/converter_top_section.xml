@@ -61,6 +61,7 @@
                 android:layout_weight="0.2"
                 android:padding="5dp"
                 android:scaleType="center"
+                android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:src="@mipmap/ic_launcher_foreground"/>
 
             <RelativeLayout
