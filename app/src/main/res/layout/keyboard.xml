@@ -109,8 +109,7 @@
                 style="@style/keyboard_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:src="@drawable/ic_backspace_black_24dp"
-                android:contentDescription="@string/btn_backspace"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:contentDescription="@string/btn_backspace"/>
         </TableRow>
 
         <TableRow style="@style/keyboard_row">
@@ -131,12 +130,12 @@
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/btn_doublezero"/>
 
-            <TextView
-                android:id="@+id/t9_key_equals"
+            <ImageView
+                android:id="@+id/t9_key_share"
                 style="@style/keyboard_equals_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
-                android:text="@string/btn_equals"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:contentDescription="@string/share"
+                android:src="@drawable/ic_share_white_24dp"/>
         </TableRow>
     </TableLayout>
 </layout>

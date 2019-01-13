@@ -1,5 +1,7 @@
 package com.vamsi.xchangerates.app.view.ui
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +43,7 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     ): View? {
         val dataBinding = DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
             inflater,
-            com.vamsi.xchangerates.app.R.layout.fragment_currency_converter,
+            R.layout.fragment_currency_converter,
             container,
             false
         )
@@ -74,12 +76,12 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
     fun initCurrencyListDialog(adapter: CurrencyListAdapter) {
         val builder = AlertDialog.Builder(context!!)
         val dialogView = layoutInflater.inflate(
-            com.vamsi.xchangerates.app.R.layout.currency_list_layout,
+            R.layout.currency_list_layout,
             null
         ) as View
         builder.setView(dialogView)
         val rv =
-            dialogView.findViewById<View>(com.vamsi.xchangerates.app.R.id.rv_currency_list) as RecyclerView
+            dialogView.findViewById<View>(R.id.rv_currency_list) as RecyclerView
         rv.addItemDecoration(
             DividerItemDecoration(
                 context!!,
@@ -122,11 +124,37 @@ class CurrencyConverter : DaggerFragment(), OnClickHandler {
             R.id.converterImage -> {
                 currencyConverterViewModel.swapFromToCurrencies()
             }
+            R.id.t9_key_share -> {
+                shareConversion()
+            }
         }
     }
 
     private fun updateCurrencyValue(view: View) {
         val enteredNumber = (view as TextView).text.toString()
         currencyConverterViewModel.updateCurrencyValue(enteredNumber)
+    }
+
+    private fun shareConversion() {
+        val fromValue = binding.converterTopSection.leftCurrencyValue.text.toString()
+        val fromCurrency = binding.converterTopSection.leftCurrencyId.text.toString()
+        val toValue = binding.converterTopSection.rightCurrencyValue.text.toString()
+        val toCurrency = binding.converterTopSection.rightCurrencyId.text.toString()
+
+        val shareBody = ( fromValue + " " + fromCurrency
+                + " = " + toValue + " " + toCurrency
+                + "\n" + getString(R.string.shared_using)
+                + " " + getString(R.string.app_name))
+        val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sharingIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
+        }
+        sharingIntent.putExtra(
+            Intent.EXTRA_SUBJECT,
+            resources.getString(R.string.currency_conversion)
+        )
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        startActivity(Intent.createChooser(sharingIntent, resources.getString(R.string.share_via)))
     }
 }

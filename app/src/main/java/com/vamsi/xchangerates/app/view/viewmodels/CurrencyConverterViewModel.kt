@@ -59,16 +59,13 @@ class CurrencyConverterViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
-
                 override fun onError(e: Throwable) {
                     Log.e("CurrConverterViewModel", e.stackTrace.toString())
                 }
-
                 override fun onNext(data: List<CurrencyUIModel>) {
                     currencyList.value = data
                     currencies = data
                 }
-
                 override fun onComplete() {
                 }
             })

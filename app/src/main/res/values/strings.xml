@@ -23,4 +23,9 @@
     <string name="btn_doublezero">00</string>
     <string name="btn_equals">=</string>
     <string name="number_button">number_button</string>
+
+    <string name="share">Share</string>
+    <string name="share_via">Share via:</string>
+    <string name="shared_using">Shared via</string>
+    <string name="currency_conversion">Currency conversion</string>
 </resources>
