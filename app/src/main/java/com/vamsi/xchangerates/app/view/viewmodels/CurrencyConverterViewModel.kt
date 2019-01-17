@@ -97,6 +97,7 @@ class CurrencyConverterViewModel @Inject constructor(
         currencyValue = when {
             currencyValue == "0" && currValue != "." && currValue != "C" && currValue != "back"-> currValue
             currValue == "C" -> "0"
+            currValue == "." && currencyValue.contains(".") -> currencyValue
             currValue == "back" -> currencyValue.substring(0, currencyValue.length - 1)
             else -> currencyValue.plus(currValue)
         }

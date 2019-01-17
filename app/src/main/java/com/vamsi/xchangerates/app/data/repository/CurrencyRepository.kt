@@ -7,7 +7,7 @@ import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.NetworkUtils
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,13 +20,8 @@ class CurrencyRepository @Inject constructor(
     private val currencyDataSource: CurrencyDataSource
 ) {
 
-    @Inject lateinit var networkUtils: NetworkUtils
-
-    val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
-
-    fun getCurrencies() = appDatabase.currencyDao().getCurrencies()
-
-    fun getCurrency(currencyId: String) = appDatabase.currencyDao().getCurrency(currencyId)
+    @Inject
+    lateinit var networkUtils: NetworkUtils
 
     fun getCurrencyFavorites(): Observable<List<CurrencyUIModel>> {
         return getCurrencyFavoritesFromDb()
@@ -36,7 +31,7 @@ class CurrencyRepository @Inject constructor(
         return getCurrenciesFromNetwork()
     }
 
-    fun getCurrenciesFromNetwork(): Observable<List<CurrencyUIModel>> {
+    private fun getCurrenciesFromNetwork(): Observable<List<CurrencyUIModel>> {
         networkUtils.isConnectedToInternet?.let {
             if (it) {
                 return currencyDataSource.requestUpdatedCurrencies().flatMap {
@@ -47,7 +42,7 @@ class CurrencyRepository @Inject constructor(
         return getCurrenciesFromDatabase()
     }
 
-    fun saveCurrencyResponse(currencyResponse: CurrencyResponse): Observable<List<CurrencyUIModel>> {
+    private fun saveCurrencyResponse(currencyResponse: CurrencyResponse): Observable<List<CurrencyUIModel>> {
         insertCurrencyResponse(currencyResponse)
         return getCurrenciesFromDatabase()
     }
@@ -56,11 +51,18 @@ class CurrencyRepository @Inject constructor(
         return appDatabase.currencyDao().getCurrenciesForUI().toObservable()
     }
 
-    fun getCurrencyFavoritesFromDb(): Observable<List<CurrencyUIModel>> {
+    private fun getCurrencyFavoritesFromDb(): Observable<List<CurrencyUIModel>> {
         return appDatabase.currencyDao().getCurrencyFavoritesForUI().toObservable()
     }
 
-    fun insertCurrencyResponse(currencyResponse: CurrencyResponse) {
+    fun updateCurrencyFavorite(currencyId: String, favorite: String) {
+        Schedulers.io().scheduleDirect {
+            appDatabase.currencyDao().updateCurrencyFavorite(currencyId, favorite)
+        }
+    }
+
+    private fun insertCurrencyResponse(currencyResponse: CurrencyResponse) {
+        Schedulers.io().scheduleDirect {
             val currencyList = ArrayList<CurrencyResponseEntity>()
             currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
                 currencyList.add(
@@ -72,5 +74,6 @@ class CurrencyRepository @Inject constructor(
                 )
             }
             appDatabase.currencyDao().updateCurrencies(currencyList)
+        }
     }
 }

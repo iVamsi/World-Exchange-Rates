@@ -6,17 +6,17 @@
             app:startDestination="@id/allCurrenciesFragment">
     <fragment
         android:id="@+id/allCurrenciesFragment"
-        android:name="com.vamsi.xchangerates.app.view.ui.AllCurrencies"
+        android:name="com.vamsi.xchangerates.app.view.ui.AllCurrenciesFragment"
         tools:layout="@layout/fragment_all_currencies"/>
 
     <fragment
         android:id="@+id/favoriteCurrenciesFragment"
-        android:name="com.vamsi.xchangerates.app.view.ui.FavoriteCurrencies"
+        android:name="com.vamsi.xchangerates.app.view.ui.FavoriteCurrenciesFragment"
         tools:layout="@layout/fragment_favorite_currencies"/>
 
     <fragment
         android:id="@+id/currencyConverterFragment"
-        android:name="com.vamsi.xchangerates.app.view.ui.CurrencyConverter"
+        android:name="com.vamsi.xchangerates.app.view.ui.CurrencyConverterFragment"
         tools:layout="@layout/fragment_currency_converter"/>
 
 </navigation>

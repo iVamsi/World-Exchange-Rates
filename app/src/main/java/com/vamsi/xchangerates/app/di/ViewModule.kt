@@ -1,8 +1,8 @@
 package com.vamsi.xchangerates.app.di
 
-import com.vamsi.xchangerates.app.view.ui.AllCurrencies
-import com.vamsi.xchangerates.app.view.ui.CurrencyConverter
-import com.vamsi.xchangerates.app.view.ui.FavoriteCurrencies
+import com.vamsi.xchangerates.app.view.ui.AllCurrenciesFragment
+import com.vamsi.xchangerates.app.view.ui.CurrencyConverterFragment
+import com.vamsi.xchangerates.app.view.ui.FavoriteCurrenciesFragment
 import com.vamsi.xchangerates.app.view.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -14,12 +14,12 @@ abstract class ViewModule {
     abstract fun contributesMainActivityInjector(): MainActivity
 
     @ContributesAndroidInjector
-    abstract fun contributesAllCurrenciesInjector(): AllCurrencies
+    abstract fun contributesAllCurrenciesInjector(): AllCurrenciesFragment
 
     @ContributesAndroidInjector
-    abstract fun contributesFavoriteCurrenciesInjector(): FavoriteCurrencies
+    abstract fun contributesFavoriteCurrenciesInjector(): FavoriteCurrenciesFragment
 
     @ContributesAndroidInjector
-    abstract fun contributesCurrencyConverterInjector(): CurrencyConverter
+    abstract fun contributesCurrencyConverterInjector(): CurrencyConverterFragment
 
 }

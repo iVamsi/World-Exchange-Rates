@@ -28,4 +28,9 @@
     <string name="share_via">Share via:</string>
     <string name="shared_using">Shared via</string>
     <string name="currency_conversion">Currency conversion</string>
+
+    <string name="set_favorite">Set as favorite?</string>
+    <string name="remove_favorite">Remove as favorite?</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
 </resources>

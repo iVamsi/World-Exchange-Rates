@@ -16,7 +16,7 @@ import javax.inject.Inject
  * The ViewModel for [AllCurrencies].
  */
 class FavoriteCurrenciesViewModel @Inject constructor(
-    currencyRepository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
     private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
@@ -49,6 +49,10 @@ class FavoriteCurrenciesViewModel @Inject constructor(
     }
 
     fun getCurrencyList() = currencyList
+
+    fun updateCurrencyFavorite(currencyId: String) {
+        currencyRepository.updateCurrencyFavorite(currencyId, "no")
+    }
 
     override fun onCleared() {
         super.onCleared()

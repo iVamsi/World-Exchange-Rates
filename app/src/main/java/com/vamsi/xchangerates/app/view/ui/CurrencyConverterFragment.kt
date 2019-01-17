@@ -24,7 +24,10 @@ import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class CurrencyConverter : DaggerFragment(), OnClickHandler {
+class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
+    override fun onItemLongClick(currencyId: String): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

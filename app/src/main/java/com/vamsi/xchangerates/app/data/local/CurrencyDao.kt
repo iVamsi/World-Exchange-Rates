@@ -27,6 +27,9 @@ interface CurrencyDao {
     @Query("UPDATE currencies SET currencyValue = :currencyValue WHERE currencyId = :currencyId")
     fun updateCurrencyValue(currencyId: String, currencyValue: Double)
 
+    @Query("UPDATE currencies SET currencyFavorite = :favorite WHERE currencyId = :currencyId")
+    fun updateCurrencyFavorite(currencyId: String, favorite: String)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateAll(currencyList: List<Currency>)
 
