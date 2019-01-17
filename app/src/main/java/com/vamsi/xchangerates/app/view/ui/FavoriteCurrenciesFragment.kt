@@ -20,9 +20,7 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
-    override fun onClick(view: View) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onClick(view: View) { }
 
     override fun onItemLongClick(currencyId: String): Boolean {
         val dialog = AlertDialog.Builder(context!!)
@@ -38,9 +36,7 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
         return true
     }
 
-    override fun onItemClicked(currencyId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onItemClicked(currencyId: String) { }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
