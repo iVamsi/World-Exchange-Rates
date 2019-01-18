@@ -12,8 +12,8 @@ android {
         applicationId "com.vamsi.xchangerates.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 32
-        versionName "5.1"
+        versionCode 33
+        versionName "5.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
     }
