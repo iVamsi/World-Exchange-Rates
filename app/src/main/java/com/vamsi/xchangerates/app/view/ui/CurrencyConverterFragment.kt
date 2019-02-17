@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.vamsi.xchangerates.app.R
@@ -19,6 +18,7 @@ import com.vamsi.xchangerates.app.databinding.FragmentCurrencyConverterBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
 import com.vamsi.xchangerates.app.utils.autoCleared
+import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment
@@ -56,8 +56,7 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CurrencyConverterViewModel::class.java)
+        currencyConverterViewModel = viewModelProvider(viewModelFactory)
         binding.apply {
             converterTopSection.viewModel = currencyConverterViewModel
             converterBottomSection.clickHandler = this@CurrencyConverterFragment

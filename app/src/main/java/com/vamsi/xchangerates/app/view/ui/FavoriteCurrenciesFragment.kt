@@ -8,12 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.vamsi.xchangerates.app.R
 import com.vamsi.xchangerates.app.databinding.FragmentFavoriteCurrenciesBinding
 import com.vamsi.xchangerates.app.utils.OnClickHandler
 import com.vamsi.xchangerates.app.utils.autoCleared
+import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.FavoriteCurrenciesViewModel
 import dagger.android.support.DaggerFragment
@@ -61,8 +61,7 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        favoriteCurrenciesViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FavoriteCurrenciesViewModel::class.java)
+        favoriteCurrenciesViewModel = viewModelProvider(viewModelFactory)
         val adapter = CurrencyAdapter(this)
         binding.apply {
             viewModel = favoriteCurrenciesViewModel

@@ -99,6 +99,7 @@ class CurrencyConverterViewModel @Inject constructor(
             currValue == "C" -> "0"
             currValue == "." && currencyValue.contains(".") -> currencyValue
             currValue == "back" -> currencyValue.substring(0, currencyValue.length - 1)
+            currencyValue.length == 6 -> currencyValue
             else -> currencyValue.plus(currValue)
         }
         if (currencyValue == "") currencyValue = "0"
