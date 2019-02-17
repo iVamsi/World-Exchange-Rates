@@ -64,16 +64,17 @@ class AllCurrenciesFragment : DaggerFragment(), OnClickHandler {
         allCurrenciesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AllCurrenciesViewModel::class.java)
         val adapter = CurrencyAdapter(this)
-        binding.viewModel = allCurrenciesViewModel
-        binding.executePendingBindings()
-
-        binding.currencyList.addItemDecoration(
-            DividerItemDecoration(
-                context!!,
-                DividerItemDecoration.VERTICAL
+        binding.apply {
+            viewModel = allCurrenciesViewModel
+            executePendingBindings()
+            currencyList.addItemDecoration(
+                DividerItemDecoration(
+                    context!!,
+                    DividerItemDecoration.VERTICAL
+                )
             )
-        )
-        binding.currencyList.adapter = adapter
+            currencyList.adapter = adapter
+        }
         subscribeUi(adapter)
     }
 

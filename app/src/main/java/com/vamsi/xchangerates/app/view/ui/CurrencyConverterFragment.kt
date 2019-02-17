@@ -58,9 +58,11 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyConverterViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CurrencyConverterViewModel::class.java)
-        binding.converterTopSection.viewModel = currencyConverterViewModel
-        binding.converterBottomSection.clickHandler = this
-        binding.converterTopSection.clickHandler = this
+        binding.apply {
+            converterTopSection.viewModel = currencyConverterViewModel
+            converterBottomSection.clickHandler = this@CurrencyConverterFragment
+            converterTopSection.clickHandler = this@CurrencyConverterFragment
+        }
         val adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
         subscribeUi(adapter)
@@ -83,15 +85,16 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
             null
         ) as View
         builder.setView(dialogView)
-        val rv =
-            dialogView.findViewById<View>(R.id.rv_currency_list) as RecyclerView
-        rv.addItemDecoration(
-            DividerItemDecoration(
-                context!!,
-                DividerItemDecoration.VERTICAL
+        val rv = dialogView.findViewById<View>(R.id.rv_currency_list) as RecyclerView
+        rv.apply {
+            addItemDecoration(
+                DividerItemDecoration(
+                    context!!,
+                    DividerItemDecoration.VERTICAL
+                )
             )
-        )
-        rv.adapter = adapter
+            this.adapter = adapter
+        }
         alertDialog = builder.create()
     }
 

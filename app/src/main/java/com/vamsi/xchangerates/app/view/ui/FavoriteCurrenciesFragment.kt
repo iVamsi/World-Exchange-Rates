@@ -64,16 +64,17 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
         favoriteCurrenciesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FavoriteCurrenciesViewModel::class.java)
         val adapter = CurrencyAdapter(this)
-        binding.viewModel = favoriteCurrenciesViewModel
-        binding.executePendingBindings()
-
-        binding.currencyList.addItemDecoration(
-            DividerItemDecoration(
-                context!!,
-                DividerItemDecoration.VERTICAL
+        binding.apply {
+            viewModel = favoriteCurrenciesViewModel
+            executePendingBindings()
+            currencyList.addItemDecoration(
+                DividerItemDecoration(
+                    context!!,
+                    DividerItemDecoration.VERTICAL
+                )
             )
-        )
-        binding.currencyList.adapter = adapter
+            currencyList.adapter = adapter
+        }
         subscribeUi(adapter)
     }
 
