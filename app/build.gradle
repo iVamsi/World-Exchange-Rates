@@ -29,9 +29,6 @@ android {
         }
         debug {
             manifestPlaceholders = [crashlyticsEnabled: false]
-            resValue "string",
-                    "google_maps_key",
-                    "AIzaSyAhJx57ikQH9rYc8IT8W3d2As5cGHMBvuo"
         }
     }
     buildTypes.each {
@@ -48,7 +45,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
     implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    implementation "android.arch.work:work-runtime-ktx:$rootProject.workVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
