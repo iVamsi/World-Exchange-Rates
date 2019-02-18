@@ -1,19 +1,23 @@
 package com.vamsi.xchangerates.app.data.repository
 
+import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 import com.vamsi.xchangerates.app.data.local.AppDatabase
+import com.vamsi.xchangerates.app.data.local.Currency
 import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
 import com.vamsi.xchangerates.app.data.remote.CurrencyDataSource
 import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
+import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
 import com.vamsi.xchangerates.app.utils.NetworkUtils
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Repository module for handling data operations.
- */
 @Singleton
 class CurrencyRepository @Inject constructor(
     private val appDatabase: AppDatabase,
@@ -22,6 +26,11 @@ class CurrencyRepository @Inject constructor(
 
     @Inject
     lateinit var networkUtils: NetworkUtils
+
+    @Inject
+    lateinit var context: Context
+
+    fun getTotalCurrencies() = appDatabase.currencyDao().getCurrenciesTotal()
 
     fun getCurrencyFavorites(): Observable<List<CurrencyUIModel>> {
         return getCurrencyFavoritesFromDb()
@@ -74,6 +83,30 @@ class CurrencyRepository @Inject constructor(
                 )
             }
             appDatabase.currencyDao().updateCurrencies(currencyList)
+        }
+    }
+
+    fun initCurrencyEntitiesInDatabase() {
+        val currencyEntityList = AppDatabase.getCurrencyResponseEntities()
+        appDatabase.currencyDao().updateCurrencies(currencyEntityList)
+    }
+
+    fun initCurrenciesInDatabase() {
+
+        initCurrencyEntitiesInDatabase()
+
+        val currencyType = object : TypeToken<List<Currency>>() {}.type
+        var jsonReader: JsonReader? = null
+
+        try {
+            val inputStream = context.assets.open(CURRENCY_DATA_FILENAME)
+            jsonReader = JsonReader(inputStream.reader())
+            val currencyList: List<Currency> = Gson().fromJson(jsonReader, currencyType)
+            appDatabase.currencyDao().insertAllCurrencies(currencyList)
+        } catch (ex: Exception) {
+            Timber.tag("CurrencyRepository").e(ex, "Error initializing database")
+        } finally {
+            jsonReader?.close()
         }
     }
 }

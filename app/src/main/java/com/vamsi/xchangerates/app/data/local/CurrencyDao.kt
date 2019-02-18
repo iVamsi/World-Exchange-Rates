@@ -12,6 +12,9 @@ interface CurrencyDao {
     @Query("SELECT * FROM currencies ORDER BY currencyId")
     fun getCurrencies(): Flowable<List<Currency>>
 
+    @Query("SELECT COUNT(*) FROM currencies")
+    fun getCurrenciesTotal(): Flowable<Int>
+
     @Query("SELECT * FROM currencies WHERE id = :currencyId")
     fun getCurrency(currencyId: String): Flowable<Currency>
 
@@ -22,7 +25,12 @@ interface CurrencyDao {
     fun insertAll(currencies: List<CurrencyResponseEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCurrencies(currencies: List<Currency>)
+    fun insertAllInCurrencyTable(currencies: List<Currency>)
+
+    @Transaction
+    fun insertAllCurrencies(currencies: List<Currency>) {
+        insertAllInCurrencyTable(currencies)
+    }
 
     @Query("UPDATE currencies SET currencyValue = :currencyValue WHERE currencyId = :currencyId")
     fun updateCurrencyValue(currencyId: String, currencyValue: Double)
