@@ -70,9 +70,9 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     private fun subscribeUi(adapter: CurrencyListAdapter) {
         currencyConverterViewModel.getCurrencyList()
             .observe(viewLifecycleOwner, Observer { currencyList ->
-                if (currencyList != null) {
-                    currencyUIModel = currencyList
-                    adapter.submitList(currencyList)
+                currencyList?.let {
+                    currencyUIModel = it
+                    adapter.submitList(it)
                 }
             })
     }
@@ -107,9 +107,11 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     }
 
     override fun onClick(view: View) {
-        if (view.tag != null && view.tag == getString(R.string.number_button)) {
-            updateCurrencyValue(view)
-            return
+        view.tag?.let {
+            if (view.tag == getString(R.string.number_button)) {
+                updateCurrencyValue(view)
+                return
+            }
         }
         when (view.id) {
             R.id.leftCurrencyLayout -> {

@@ -17,7 +17,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * The ViewModel for [AllCurrencies].
+ * The ViewModel for [AllCurrenciesFragment].
  */
 class AllCurrenciesViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
@@ -33,7 +33,7 @@ class AllCurrenciesViewModel @Inject constructor(
         initLocalCurrencies()
     }
 
-    fun initLocalCurrencies() {
+    private fun initLocalCurrencies() {
         val disposable = currencyRepository.getTotalCurrencies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

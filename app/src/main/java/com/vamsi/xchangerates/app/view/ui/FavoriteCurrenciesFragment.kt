@@ -79,7 +79,9 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
 
     private fun subscribeUi(adapter: CurrencyAdapter) {
         favoriteCurrenciesViewModel.getCurrencyList().observe(viewLifecycleOwner, Observer { currencyList ->
-            if (currencyList != null) adapter.submitList(currencyList)
+            currencyList?.let {
+                adapter.submitList(it)
+            }
         })
     }
 }
