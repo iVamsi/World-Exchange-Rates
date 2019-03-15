@@ -25,34 +25,30 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
-    override fun onItemLongClick(currencyId: String): Boolean {
-        return true
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var currencyConverterViewModel: CurrencyConverterViewModel
     var binding by autoCleared<FragmentCurrencyConverterBinding>()
-    lateinit var currencyUIModel: List<CurrencyUIModel>
-    lateinit var alertDialog: AlertDialog
     lateinit var currency: CurrencyUIModel
 
-    var isLeftCurrencyClicked = false
+    private var isLeftCurrencyClicked = false
+    private lateinit var currencyConverterViewModel: CurrencyConverterViewModel
+    private lateinit var currencyUIModel: List<CurrencyUIModel>
+    private lateinit var alertDialog: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataBinding = DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
+        return DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
             inflater,
             R.layout.fragment_currency_converter,
             container,
             false
-        )
-
-        binding = dataBinding
-        return dataBinding.root
+        ).apply {
+            binding = this
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,6 +100,10 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     override fun onItemClicked(currencyId: String) {
         alertDialog.dismiss()
         currencyConverterViewModel.onItemClick(isLeftCurrencyClicked, currencyId)
+    }
+
+    override fun onItemLongClick(currencyId: String): Boolean {
+        return true
     }
 
     override fun onClick(view: View) {

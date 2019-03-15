@@ -20,28 +20,11 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
-    override fun onClick(view: View) { }
-
-    override fun onItemLongClick(currencyId: String): Boolean {
-        val dialog = AlertDialog.Builder(context!!)
-            .setMessage(R.string.remove_favorite)
-            .setPositiveButton(R.string.button_yes) {
-                _, _ -> favoriteCurrenciesViewModel.updateCurrencyFavorite(currencyId)
-            }
-            .setNegativeButton(R.string.button_no) {
-                dialog, _ -> dialog.dismiss()
-            }
-            .create()
-        dialog.show()
-        return true
-    }
-
-    override fun onItemClicked(currencyId: String) { }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var favoriteCurrenciesViewModel: FavoriteCurrenciesViewModel
+    private lateinit var favoriteCurrenciesViewModel: FavoriteCurrenciesViewModel
 
     var binding by autoCleared<FragmentFavoriteCurrenciesBinding>()
 
@@ -49,15 +32,14 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataBinding = DataBindingUtil.inflate<FragmentFavoriteCurrenciesBinding>(
+        return DataBindingUtil.inflate<FragmentFavoriteCurrenciesBinding>(
             inflater,
             R.layout.fragment_favorite_currencies,
             container,
             false
-        )
-
-        binding = dataBinding
-        return dataBinding.root
+        ).apply {
+            binding = this
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,4 +66,22 @@ class FavoriteCurrenciesFragment : DaggerFragment(), OnClickHandler {
             }
         })
     }
+
+    override fun onClick(view: View) { }
+
+    override fun onItemLongClick(currencyId: String): Boolean {
+        val dialog = AlertDialog.Builder(context!!)
+            .setMessage(R.string.remove_favorite)
+            .setPositiveButton(R.string.button_yes) {
+                    _, _ -> favoriteCurrenciesViewModel.updateCurrencyFavorite(currencyId)
+            }
+            .setNegativeButton(R.string.button_no) {
+                    dialog, _ -> dialog.dismiss()
+            }
+            .create()
+        dialog.show()
+        return true
+    }
+
+    override fun onItemClicked(currencyId: String) { }
 }

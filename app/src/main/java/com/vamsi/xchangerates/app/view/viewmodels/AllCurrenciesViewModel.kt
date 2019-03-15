@@ -74,26 +74,27 @@ class AllCurrenciesViewModel @Inject constructor(
     private fun isDatabaseEmpty(currenciesTotal: Int) = currenciesTotal == 0
 
     private fun fetchUpdatedCurrencies() {
-        compositeDisposable.add(currencyRepository
-            .getUpdatedCurrencies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
+        compositeDisposable.add(
+            currencyRepository
+                .getUpdatedCurrencies()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
 
-                override fun onError(t: Throwable) {
-                    Timber.tag("AllCurrenciesViewModel").e(t.stackTrace.toString())
-                    isLoading.set(false)
-                }
+                    override fun onError(t: Throwable) {
+                        Timber.tag("AllCurrenciesViewModel").e(t.stackTrace.toString())
+                        isLoading.set(false)
+                    }
 
-                override fun onNext(data: List<CurrencyUIModel>) {
-                    isLoading.set(false)
-                    currencyList.value = data
-                }
+                    override fun onNext(data: List<CurrencyUIModel>) {
+                        isLoading.set(false)
+                        currencyList.value = data
+                    }
 
-                override fun onComplete() {
-                    isLoading.set(false)
-                }
-            })
+                    override fun onComplete() {
+                        isLoading.set(false)
+                    }
+                })
         )
     }
 
