@@ -28,23 +28,15 @@ buildscript {
         supportLibraryVersion = '1.0.2'
         uiAutomatorVersion = '2.2.0-alpha4'
         daggerVersion = '2.19'
-        crashlyticsVersion = '2.9.9'
-        googleServicesVersion = '4.2.0'
-        fabricVersion = '1.26.1'
     }
 
     repositories {
         google()
         jcenter()
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "com.google.gms:google-services:$googleServicesVersion"
-        classpath "io.fabric.tools:gradle:$fabricVersion"
     }
 }
 

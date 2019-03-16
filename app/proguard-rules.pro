@@ -28,8 +28,6 @@
 }
 -keepattributes *Annotation*
 -keep public class * extends java.lang.Exception
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
 
 # Dagger2
 -dontwarn com.google.errorprone.annotations.**
@@ -41,9 +39,6 @@
 -dontwarn org.conscrypt.**
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
-
-# Firebase
--dontwarn retrofit2.Call
 
 -keep class com.vamsi.xchangerates.app.** {
     *;

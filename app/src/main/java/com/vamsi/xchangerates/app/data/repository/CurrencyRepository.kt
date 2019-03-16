@@ -1,6 +1,7 @@
 package com.vamsi.xchangerates.app.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
@@ -14,7 +15,6 @@ import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
 import com.vamsi.xchangerates.app.utils.NetworkUtils
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -104,7 +104,7 @@ class CurrencyRepository @Inject constructor(
             val currencyList: List<Currency> = Gson().fromJson(jsonReader, currencyType)
             appDatabase.currencyDao().insertAllCurrencies(currencyList)
         } catch (ex: Exception) {
-            Timber.tag("CurrencyRepository").e(ex, "Error initializing database")
+            Log.e("CurrencyRepository", "Error initializing database")
         } finally {
             jsonReader?.close()
         }

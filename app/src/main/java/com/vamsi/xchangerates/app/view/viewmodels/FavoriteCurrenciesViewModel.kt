@@ -1,5 +1,6 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -33,7 +33,7 @@ class FavoriteCurrenciesViewModel @Inject constructor(
             .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
 
                 override fun onError(t: Throwable) {
-                    Timber.tag("AllCurrenciesViewModel").e(t.stackTrace.toString())
+                    Log.e("AllCurrenciesViewModel", t.stackTrace.toString())
                 }
 
                 override fun onNext(data: List<CurrencyUIModel>) {

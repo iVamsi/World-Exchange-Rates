@@ -1,5 +1,6 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,7 +42,7 @@ class AllCurrenciesViewModel @Inject constructor(
                     initializeDatabase()
                 } else {
                     fetchUpdatedCurrencies()
-                    Timber.tag("SplashViewModel").i("Database has already been initialized")
+                    Log.i("SplashViewModel", "Database has already been initialized")
                 }
             }
         compositeDisposable.add(disposable)
@@ -60,13 +60,13 @@ class AllCurrenciesViewModel @Inject constructor(
                 }
 
                 override fun onComplete() {
-                    Timber.tag("SplashViewModel").i("Database has been initialized")
+                    Log.i("SplashViewModel", "Database has been initialized")
                     fetchUpdatedCurrencies()
                 }
 
                 override fun onError(@NonNull e: Throwable) {
                     e.printStackTrace()
-                    Timber.tag("SplashViewModel").e("Unable to initialize database")
+                    Log.e("SplashViewModel", "Unable to initialize database")
                 }
             })
     }
@@ -82,7 +82,7 @@ class AllCurrenciesViewModel @Inject constructor(
                 .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
 
                     override fun onError(t: Throwable) {
-                        Timber.tag("AllCurrenciesViewModel").e(t.stackTrace.toString())
+                        Log.e("AllCurrenciesViewModel", t.stackTrace.toString())
                         isLoading.set(false)
                     }
 
