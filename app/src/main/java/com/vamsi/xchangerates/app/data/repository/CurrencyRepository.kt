@@ -21,15 +21,10 @@ import javax.inject.Singleton
 @Singleton
 class CurrencyRepository @Inject constructor(
     private val appDatabase: AppDatabase,
-    private val currencyDataSource: CurrencyDataSource
+    private val currencyDataSource: CurrencyDataSource,
+    private val networkUtils: NetworkUtils,
+    private val context: Context
 ) {
-
-    @Inject
-    lateinit var networkUtils: NetworkUtils
-
-    @Inject
-    lateinit var context: Context
-
     fun getTotalCurrencies() = appDatabase.currencyDao().getCurrenciesTotal()
 
     fun getCurrencyFavorites(): Observable<List<CurrencyUIModel>> {
