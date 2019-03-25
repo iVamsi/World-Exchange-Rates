@@ -5,15 +5,15 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.vamsi.xchangerates.app.data.local.AppDatabase
-import com.vamsi.xchangerates.app.data.local.Currency
-import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
+import com.vamsi.xchangerates.app.data.local.*
 import com.vamsi.xchangerates.app.data.remote.CurrencyDataSource
 import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
 import com.vamsi.xchangerates.app.utils.NetworkUtils
 import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +23,8 @@ class CurrencyRepository @Inject constructor(
     private val appDatabase: AppDatabase,
     private val currencyDataSource: CurrencyDataSource,
     private val networkUtils: NetworkUtils,
-    private val context: Context
+    private val context: Context,
+    private val cacheManager: CacheManager<CurrencyUIModel>
 ) {
     fun getTotalCurrencies() = appDatabase.currencyDao().getCurrenciesTotal()
 
@@ -32,15 +33,21 @@ class CurrencyRepository @Inject constructor(
     }
 
     fun getUpdatedCurrencies(): Observable<List<CurrencyUIModel>> {
-        return getCurrenciesFromNetwork()
+        val data = cacheManager.getData()
+        if (data.isEmpty.subscribeOn(Schedulers.io()).blockingGet()) {
+            return getCurrenciesFromNetwork()
+        }
+        return data
     }
 
     private fun getCurrenciesFromNetwork(): Observable<List<CurrencyUIModel>> {
         networkUtils.isConnectedToInternet?.let {
             if (it) {
-                return currencyDataSource.requestUpdatedCurrencies().flatMap {
+                val response = currencyDataSource.requestUpdatedCurrencies().flatMap {
                     return@flatMap saveCurrencyResponse(it)
                 }
+                cacheManager.saveDataInMemory(response.subscribeOn(Schedulers.io()).blockingFirst())
+                return response
             }
         }
         return getCurrenciesFromDatabase()
@@ -65,19 +72,26 @@ class CurrencyRepository @Inject constructor(
         }
     }
 
+    private fun getCurrencyListFromResponse(currencyResponse: CurrencyResponse):
+            List<CurrencyResponseEntity> {
+        val currencyList = ArrayList<CurrencyResponseEntity>()
+        currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
+            currencyList.add(
+                CurrencyResponseEntity(
+                    currId.substring(
+                        3
+                    ), currValue
+                )
+            )
+        }
+        return currencyList
+    }
+
     private fun insertCurrencyResponse(currencyResponse: CurrencyResponse) {
         Schedulers.io().scheduleDirect {
-            val currencyList = ArrayList<CurrencyResponseEntity>()
-            currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
-                currencyList.add(
-                    CurrencyResponseEntity(
-                        currId.substring(
-                            3
-                        ), currValue
-                    )
-                )
-            }
-            appDatabase.currencyDao().updateCurrencies(currencyList)
+            appDatabase
+                .currencyDao()
+                .updateCurrencies(getCurrencyListFromResponse(currencyResponse))
         }
     }
 
