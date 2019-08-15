@@ -326,7 +326,7 @@
     "currencyName": "Euro",
     "currencyValue": 0.883585,
     "currencyFavorite": "yes",
-    "baseCurrency": "no"
+    "baseCurrency": "yes"
   },
   {
     "currencyId": "FJD",
@@ -1047,7 +1047,7 @@
     "currencyName": "United States Dollar",
     "currencyValue": 1,
     "currencyFavorite": "yes",
-    "baseCurrency": "yes"
+    "baseCurrency": "no"
   },
   {
     "currencyId": "UYU",

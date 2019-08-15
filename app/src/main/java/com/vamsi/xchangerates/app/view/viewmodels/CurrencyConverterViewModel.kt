@@ -21,7 +21,7 @@ class CurrencyConverterViewModel @Inject constructor(
     currencyRepository: CurrencyRepository
 ) : ObservableViewModel() {
 
-    var leftCurrencyCode: String = "USD"
+    var leftCurrencyCode: String = "EUR"
         @Bindable get() {
             return field
         }

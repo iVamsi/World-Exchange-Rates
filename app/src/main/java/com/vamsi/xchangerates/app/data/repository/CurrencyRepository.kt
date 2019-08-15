@@ -78,9 +78,7 @@ class CurrencyRepository @Inject constructor(
         currencyResponse.currencyQuotes.forEach { (currId, currValue) ->
             currencyList.add(
                 CurrencyResponseEntity(
-                    currId.substring(
-                        3
-                    ), currValue
+                    currId, currValue
                 )
             )
         }
