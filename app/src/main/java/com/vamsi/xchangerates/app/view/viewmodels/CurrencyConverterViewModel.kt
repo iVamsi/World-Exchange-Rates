@@ -1,24 +1,22 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.vamsi.xchangerates.app.BR
-import com.vamsi.xchangerates.app.data.repository.CurrencyRepository
+import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepository
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.Converter
 import com.vamsi.xchangerates.app.utils.ObservableViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * The ViewModel for [AllCurrencies].
  */
 class CurrencyConverterViewModel @Inject constructor(
-    currencyRepository: CurrencyRepository
+    private val worldExchangeRatesRepository: WorldExchangeRatesRepository
 ) : ObservableViewModel() {
 
     var leftCurrencyCode: String = "EUR"
@@ -49,27 +47,20 @@ class CurrencyConverterViewModel @Inject constructor(
             notifyPropertyChanged(BR.convertedValue)
         }
 
-    private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
-    private var currencies: List<CurrencyUIModel> = arrayListOf()
+    private val currencyList = MutableLiveData<List<CurrencyUIModel>>()
+    private val currencies = mutableListOf<CurrencyUIModel>()
     private val compositeDisposable = CompositeDisposable()
 
     init {
-        compositeDisposable.add(currencyRepository
-            .getCurrenciesFromDatabase()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
-                override fun onError(t: Throwable) {
-                    Log.e("CurrConverterViewModel", t.stackTrace.toString())
-                }
-                override fun onNext(data: List<CurrencyUIModel>) {
-                    currencyList.value = data
-                    currencies = data
-                }
-                override fun onComplete() {
-                }
-            })
-        )
+        fetchCurrencies()
+    }
+
+    private fun fetchCurrencies() {
+        viewModelScope.launch {
+            currencyList.value = worldExchangeRatesRepository.fetchCurrencies()
+            currencies.clear()
+            currencies.addAll(currencyList.value ?: emptyList())
+        }
     }
 
     fun getCurrencyList() = currencyList
@@ -95,7 +86,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun updateCurrencyValue(currValue: String) {
         currencyValue = when {
-            currencyValue == "0" && currValue != "." && currValue != "C" && currValue != "back"-> currValue
+            currencyValue == "0" && currValue != "." && currValue != "C" && currValue != "back" -> currValue
             currValue == "C" -> "0"
             currValue == "." && currencyValue.contains(".") -> currencyValue
             currValue == "back" -> currencyValue.substring(0, currencyValue.length - 1)

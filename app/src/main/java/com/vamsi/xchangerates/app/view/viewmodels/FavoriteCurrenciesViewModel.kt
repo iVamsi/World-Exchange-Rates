@@ -1,61 +1,41 @@
 package com.vamsi.xchangerates.app.view.viewmodels
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vamsi.xchangerates.app.data.repository.CurrencyRepository
+import androidx.lifecycle.viewModelScope
+import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepository
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * The ViewModel for [AllCurrencies].
  */
 class FavoriteCurrenciesViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository
+    private val worldExchangeRatesRepository: WorldExchangeRatesRepository
 ) : ViewModel() {
 
     private var currencyList = MutableLiveData<List<CurrencyUIModel>>()
-    private val compositeDisposable = CompositeDisposable()
-
     var isLoading = ObservableField(false)
 
     init {
         isLoading.set(true)
-        compositeDisposable.add(currencyRepository
-            .getCurrencyFavorites()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<List<CurrencyUIModel>>() {
+        fetchFavoriteCurrencies()
+    }
 
-                override fun onError(t: Throwable) {
-                    Log.e("AllCurrenciesViewModel", t.stackTrace.toString())
-                }
-
-                override fun onNext(data: List<CurrencyUIModel>) {
-                    isLoading.set(false)
-                    currencyList.value = data
-                }
-
-                override fun onComplete() {
-                    isLoading.set(false)
-                }
-            })
-        )
+    private fun fetchFavoriteCurrencies() {
+        viewModelScope.launch {
+            currencyList.value = worldExchangeRatesRepository.getFavoriteCurrencies()
+            isLoading.set(false)
+        }
     }
 
     fun getCurrencyList() = currencyList
 
     fun updateCurrencyFavorite(currencyId: String) {
-        currencyRepository.updateCurrencyFavorite(currencyId, "no")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
+        viewModelScope.launch {
+            worldExchangeRatesRepository.updateCurrencyFavorite(currencyId, favorite = "no")
+        }
     }
 }
