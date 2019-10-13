@@ -46,8 +46,8 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchCurrencies(): List<CurrencyUIModel> {
+        initializeDatabase()
         networkUtils.isConnectedToInternet?.let {
-            initializeDatabase()
             if (it) {
                 val currencyResponse = worldExchangeRatesService.fetchCurrencies(
                     BuildConfig.CURRENCY_API_KEY,
