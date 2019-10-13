@@ -20,7 +20,7 @@ package com.vamsi.xchangerates.app.data.repository
 //
 // @Singleton
 // class CurrencyRepository @Inject constructor(
-//     private val appDatabase: AppDatabase,
+//     private val appDatabase: WorldExchangeRatesDatabase,
 //     private val currencyDataSource: CurrencyDataSource,
 //     private val networkUtils: NetworkUtils,
 //     private val context: Context,
@@ -94,7 +94,7 @@ package com.vamsi.xchangerates.app.data.repository
 //     }
 //
 //     fun initCurrencyEntitiesInDatabase() {
-//         val currencyEntityList = AppDatabase.getCurrencyResponseEntities()
+//         val currencyEntityList = WorldExchangeRatesDatabase.getCurrencyResponseEntities()
 //         appDatabase.currencyDao().updateCurrencies(currencyEntityList)
 //     }
 //

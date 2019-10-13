@@ -20,27 +20,21 @@ class CurrencyConverterViewModel @Inject constructor(
 ) : ObservableViewModel() {
 
     var leftCurrencyCode: String = "EUR"
-        @Bindable get() {
-            return field
-        }
+        @Bindable get
         set(value) {
             field = value
             notifyPropertyChanged(BR.leftCurrencyCode)
         }
 
     var rightCurrencyCode: String = "INR"
-        @Bindable get() {
-            return field
-        }
+        @Bindable get
         set(value) {
             field = value
             notifyPropertyChanged(BR.rightCurrencyCode)
         }
 
     var currencyValue: String = "0"
-        @Bindable get() {
-            return field
-        }
+        @Bindable get
         set(value) {
             field = value
             notifyPropertyChanged(BR.currencyValue)
