@@ -50,7 +50,7 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
         networkUtils.isConnectedToInternet?.let {
             if (it) {
                 val currencyResponse = worldExchangeRatesService.fetchCurrencies(
-                    BuildConfig.CURRENCY_API_KEY,
+                    BuildConfig.GRADLE_CURRENCY_API_KEY,
                     FORMAT_TYPE
                 )
                 insertCurrencyResponse(getCurrencyListFromResponse(currencyResponse))
