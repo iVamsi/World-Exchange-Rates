@@ -9,7 +9,6 @@ references:
 
     environment:
       JVM_OPTS: -Xmx3g
-      currencyApiKey: <%= ENV['currencyApiKey'] %>
 
 commands:
   generate-gradle-checksums:
