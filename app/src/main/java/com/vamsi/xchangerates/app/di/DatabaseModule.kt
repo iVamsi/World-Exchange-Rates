@@ -1,9 +1,9 @@
 package com.vamsi.xchangerates.app.di
 
 import android.content.Context
-import com.vamsi.xchangerates.app.data.local.AppDatabase
 import com.vamsi.xchangerates.app.data.local.CacheManager
 import com.vamsi.xchangerates.app.data.local.CacheManagerImpl
+import com.vamsi.xchangerates.app.data.local.WorldExchangeRatesDatabase
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,7 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(context: Context) = AppDatabase.buildDatabase(context)
+    fun provideAppDatabase(context: Context) = WorldExchangeRatesDatabase.buildDatabase(context)
 
     @Singleton
     @Provides

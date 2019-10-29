@@ -11,6 +11,7 @@ import javax.inject.Singleton
         AppModule::class,
         DatabaseModule::class,
         ServiceModule::class,
+        RepositoryModule::class,
         ViewModule::class]
 )
 interface AppComponent : AndroidInjector<CurrencyApplication> {

@@ -10,14 +10,14 @@ import com.vamsi.xchangerates.app.utils.DATABASE_NAME
  * The Room database for this app
  */
 @Database(entities = [Currency::class, CurrencyResponseEntity::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+abstract class WorldExchangeRatesDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao
 
     companion object {
 
-        fun buildDatabase(context: Context): AppDatabase = Room.databaseBuilder(
+        fun buildDatabase(context: Context): WorldExchangeRatesDatabase = Room.databaseBuilder(
             context.applicationContext,
-            AppDatabase::class.java,
+            WorldExchangeRatesDatabase::class.java,
             DATABASE_NAME
         ).build()
 
