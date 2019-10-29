@@ -3,6 +3,7 @@ package com.vamsi.xchangerates.app.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.vamsi.xchangerates.app.data.remote.CurrencyService
+import com.vamsi.xchangerates.app.data.remote.WorldExchangeRatesService
 import com.vamsi.xchangerates.app.utils.BASE_API_LAYER
 import dagger.Module
 import dagger.Provides
@@ -50,4 +51,9 @@ class ServiceModule {
     @Singleton
     fun provideCurrencyService(retrofit: Retrofit): CurrencyService =
         retrofit.create(CurrencyService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideWorldExchangeRatesService(retrofit: Retrofit): WorldExchangeRatesService =
+        retrofit.create(WorldExchangeRatesService::class.java)
 }

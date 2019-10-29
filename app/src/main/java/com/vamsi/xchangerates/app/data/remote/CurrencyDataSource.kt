@@ -7,6 +7,5 @@ import javax.inject.Inject
 class CurrencyDataSource @Inject constructor(private val currencyService: CurrencyService) {
 
     fun requestUpdatedCurrencies() =
-        currencyService.requestUpdatedCurrencies(
-            BuildConfig.CURRENCY_API_KEY, FORMAT_TYPE)
+        currencyService.requestUpdatedCurrencies(BuildConfig.GRADLE_CURRENCY_API_KEY, FORMAT_TYPE)
 }

@@ -94,6 +94,7 @@
                 android:tag="@string/number_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/btn_period"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"/>
 
@@ -119,7 +120,7 @@
                 style="@style/keyboard_button"
                 android:onClick="@{(v) -> clickHandler.onClick(v)}"
                 android:text="@string/btn_clear"
-                android:textColor="@color/Black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textAllCaps="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,7 @@ import com.vamsi.xchangerates.app.databinding.FragmentCurrencyConverterBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
 import com.vamsi.xchangerates.app.utils.autoCleared
+import com.vamsi.xchangerates.app.utils.observe
 import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
@@ -31,10 +31,10 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
 
     var binding by autoCleared<FragmentCurrencyConverterBinding>()
     lateinit var currency: CurrencyUIModel
+    private lateinit var adapter: CurrencyListAdapter
 
     private var isLeftCurrencyClicked = false
     private lateinit var currencyConverterViewModel: CurrencyConverterViewModel
-    private lateinit var currencyUIModel: List<CurrencyUIModel>
     private lateinit var alertDialog: AlertDialog
 
     override fun onCreateView(
@@ -58,22 +58,18 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
             converterBottomSection.clickHandler = this@CurrencyConverterFragment
             converterTopSection.clickHandler = this@CurrencyConverterFragment
         }
-        val adapter = CurrencyListAdapter(this)
+        adapter = CurrencyListAdapter(this)
         initCurrencyListDialog(adapter)
-        subscribeUi(adapter)
+        observe(currencyConverterViewModel.getCurrencyList(), ::onCurrencyListAvailable)
     }
 
-    private fun subscribeUi(adapter: CurrencyListAdapter) {
-        currencyConverterViewModel.getCurrencyList()
-            .observe(viewLifecycleOwner, Observer { currencyList ->
-                currencyList?.let {
-                    currencyUIModel = it
-                    adapter.submitList(it)
-                }
-            })
+    private fun onCurrencyListAvailable(currencyList: List<CurrencyUIModel>?) {
+        currencyList?.let {
+            adapter.submitList(it)
+        }
     }
 
-    fun initCurrencyListDialog(adapter: CurrencyListAdapter) {
+    private fun initCurrencyListDialog(adapter: CurrencyListAdapter) {
         val builder = AlertDialog.Builder(context!!)
         val dialogView = layoutInflater.inflate(
             R.layout.currency_list_layout,
@@ -152,7 +148,7 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
                 + " = " + toValue + " " + toCurrency
                 + "\n" + getString(R.string.shared_using)
                 + " " + getString(R.string.app_name))
-        val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+        val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.type = "text/plain"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sharingIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT)
