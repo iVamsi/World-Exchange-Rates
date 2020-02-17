@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.core.di
+package com.vamsi.xchangerates.app.di
 
 import android.content.Context
 import com.vamsi.xchangerates.app.utils.NetworkUtils

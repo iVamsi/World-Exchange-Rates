@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.core.di
+package com.vamsi.xchangerates.app.di
 
 import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepository
 import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepositoryImpl

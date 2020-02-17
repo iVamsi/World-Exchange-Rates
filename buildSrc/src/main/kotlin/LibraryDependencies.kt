@@ -26,6 +26,4 @@ object Versions {
 object LibraryDependencies {
     const val NAVIGATION_FRAGMENT = "android.arch.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
     const val NAVIGATION_UI_KTX ="android.arch.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
-    const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesVersion}"
-    const val KOTLINX_COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesVersion}"
 }

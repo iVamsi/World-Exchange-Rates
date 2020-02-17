@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.core.di.viewmodel
+package com.vamsi.xchangerates.app.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
