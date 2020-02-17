@@ -1,7 +1,9 @@
-package com.vamsi.xchangerates.app.di
+package com.vamsi.xchangerates.app.core.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.vamsi.xchangerates.app.core.di.viewmodel.CurrencyViewModelFactory
+import com.vamsi.xchangerates.app.core.di.viewmodel.ViewModelKey
 import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import com.vamsi.xchangerates.app.view.viewmodels.FavoriteCurrenciesViewModel

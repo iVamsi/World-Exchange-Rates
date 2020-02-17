@@ -1,7 +1,8 @@
-package com.vamsi.xchangerates.app.di
+package com.vamsi.xchangerates.app.core.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.vamsi.xchangerates.app.core.di.viewmodel.ViewModelModule
 import com.vamsi.xchangerates.app.data.remote.CurrencyService
 import com.vamsi.xchangerates.app.data.remote.WorldExchangeRatesService
 import com.vamsi.xchangerates.app.utils.BASE_API_LAYER

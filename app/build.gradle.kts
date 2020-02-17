@@ -1,6 +1,8 @@
 import com.android.build.gradle.internal.dsl.BaseFlavor
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import org.jetbrains.kotlin.config.AnalysisFlags.experimental
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     id("com.android.application")
@@ -65,8 +67,8 @@ dependencies {
     implementation("com.google.android.material:material:${Versions.materialVersion}")
     implementation("com.google.code.gson:gson:${Versions.gsonVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesVersion}")
+    implementation(LibraryDependencies.KOTLINX_COROUTINES)
+    implementation(LibraryDependencies.KOTLINX_COROUTINES_ANDROID)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-beta01")
 
 // Testing dependencies

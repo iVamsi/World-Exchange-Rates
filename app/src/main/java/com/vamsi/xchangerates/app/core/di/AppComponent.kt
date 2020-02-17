@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.di
+package com.vamsi.xchangerates.app.core.di
 
 import dagger.Component
 import dagger.android.AndroidInjector

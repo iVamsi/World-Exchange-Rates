@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.di
+package com.vamsi.xchangerates.app.core.di
 
 import com.vamsi.xchangerates.app.view.ui.AllCurrenciesFragment
 import com.vamsi.xchangerates.app.view.ui.CurrencyConverterFragment

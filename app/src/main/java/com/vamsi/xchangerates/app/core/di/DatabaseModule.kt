@@ -1,4 +1,4 @@
-package com.vamsi.xchangerates.app.di
+package com.vamsi.xchangerates.app.core.di
 
 import android.content.Context
 import com.vamsi.xchangerates.app.data.local.CacheManager
