@@ -1,0 +1,16 @@
+*.properties
+*.iml
+*.bin
+*.lock
+*.xml
+*.ser
+*.class
+*.kotlin_module
+*.txt
+*.tab
+*.keystream
+*.len
+*.at
+*.tab_i
+*.jar
+*.MF
