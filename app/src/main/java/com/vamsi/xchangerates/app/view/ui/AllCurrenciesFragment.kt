@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
 import com.vamsi.xchangerates.app.R
+import com.vamsi.xchangerates.app.core.exception.Failure
+import com.vamsi.xchangerates.app.core.extension.autoCleared
+import com.vamsi.xchangerates.app.core.extension.observe
+import com.vamsi.xchangerates.app.core.extension.viewModelProvider
 import com.vamsi.xchangerates.app.databinding.FragmentAllCurrenciesBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
-import com.vamsi.xchangerates.app.utils.autoCleared
-import com.vamsi.xchangerates.app.utils.observe
-import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.AllCurrenciesViewModel
 import dagger.android.support.DaggerFragment
@@ -59,6 +62,18 @@ class AllCurrenciesFragment : DaggerFragment(), OnClickHandler {
             currencyList.adapter = adapter
         }
         observe(allCurrenciesViewModel.getCurrencyList(), ::onCurrencyListAvailable)
+        observe(allCurrenciesViewModel.failure, ::handleFailure)
+    }
+
+    private fun handleFailure(failure: Failure?) {
+        when (failure) {
+            is Failure.NetworkConnection -> renderFailure(R.string.failure_network_connection)
+            is Failure.ServerError -> renderFailure(R.string.failure_server_error)
+        }
+    }
+
+    private fun renderFailure(@StringRes message: Int) {
+        Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun onCurrencyListAvailable(currencyList: List<CurrencyUIModel>?) {

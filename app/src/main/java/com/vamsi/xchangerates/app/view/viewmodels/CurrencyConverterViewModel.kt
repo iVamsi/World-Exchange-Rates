@@ -4,7 +4,9 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vamsi.xchangerates.app.BR
+import com.vamsi.xchangerates.app.core.interactor.UseCase
 import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepository
+import com.vamsi.xchangerates.app.domain.GetCurrencies
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.Converter
 import com.vamsi.xchangerates.app.utils.ObservableViewModel
@@ -16,6 +18,7 @@ import javax.inject.Inject
  * The ViewModel for [AllCurrencies].
  */
 class CurrencyConverterViewModel @Inject constructor(
+    private val getCurrencies: GetCurrencies,
     private val worldExchangeRatesRepository: WorldExchangeRatesRepository
 ) : ObservableViewModel() {
 
@@ -51,7 +54,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
     private fun fetchCurrencies() {
         viewModelScope.launch {
-            currencyList.value = worldExchangeRatesRepository.fetchCurrencies()
+            getCurrencies(UseCase.None()) { it.fold(::handleFailure, ::handleCurrenciesList) }
             currencies.clear()
             currencies.addAll(currencyList.value ?: emptyList())
         }
@@ -110,5 +113,9 @@ class CurrencyConverterViewModel @Inject constructor(
     private fun getCurrencyCodeValue(list: List<CurrencyUIModel>, name: String): Double {
         return if (list.isEmpty()) 0.0
         else list.find { it.currId == name }?.currValue!!
+    }
+
+    private fun handleCurrenciesList(currencies: List<CurrencyUIModel>) {
+        this.currencyList.value = currencies
     }
 }

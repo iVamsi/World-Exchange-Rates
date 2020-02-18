@@ -1,5 +1,7 @@
 package com.vamsi.xchangerates.app.data.repository
 
+import com.vamsi.xchangerates.app.core.exception.Failure
+import com.vamsi.xchangerates.app.core.functional.Either
 import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 
@@ -9,7 +11,7 @@ interface WorldExchangeRatesRepository {
 
     suspend fun getCountOfCurrenciesInDatabase(): Int
 
-    suspend fun fetchCurrencies(): List<CurrencyUIModel>
+    suspend fun fetchCurrencies(): Either<Failure, List<CurrencyUIModel>>
 
     suspend fun insertCurrencyResponse(currencyList: List<CurrencyResponseEntity>)
 

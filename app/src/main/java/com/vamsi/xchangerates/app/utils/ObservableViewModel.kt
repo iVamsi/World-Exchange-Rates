@@ -3,6 +3,7 @@ package com.vamsi.xchangerates.app.utils
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
+import com.vamsi.xchangerates.app.core.platform.BaseViewModel
 
 /*
  * Copyright (C) 2018 The Android Open Source Project
@@ -24,7 +25,7 @@ import androidx.lifecycle.ViewModel
 /**
  * A ViewModel that is also an Observable, to be used with Data Binding.
  */
-open class ObservableViewModel : ViewModel(), Observable {
+open class ObservableViewModel : BaseViewModel(), Observable {
 
     private val callbacks: PropertyChangeRegistry = PropertyChangeRegistry()
 

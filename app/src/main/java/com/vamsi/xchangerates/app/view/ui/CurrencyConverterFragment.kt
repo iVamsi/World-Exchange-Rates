@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.vamsi.xchangerates.app.R
+import com.vamsi.xchangerates.app.core.extension.autoCleared
+import com.vamsi.xchangerates.app.core.extension.observe
+import com.vamsi.xchangerates.app.core.extension.viewModelProvider
 import com.vamsi.xchangerates.app.databinding.FragmentCurrencyConverterBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
-import com.vamsi.xchangerates.app.utils.autoCleared
-import com.vamsi.xchangerates.app.utils.observe
-import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
 import dagger.android.support.DaggerFragment

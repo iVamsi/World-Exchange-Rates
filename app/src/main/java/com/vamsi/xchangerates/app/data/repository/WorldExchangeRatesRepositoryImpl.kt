@@ -6,6 +6,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.vamsi.xchangerates.app.BuildConfig
+import com.vamsi.xchangerates.app.core.exception.Failure
+import com.vamsi.xchangerates.app.core.functional.Either
+import com.vamsi.xchangerates.app.core.functional.Either.Left
+import com.vamsi.xchangerates.app.core.functional.Either.Right
 import com.vamsi.xchangerates.app.data.local.Currency
 import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
 import com.vamsi.xchangerates.app.data.local.WorldExchangeRatesDatabase
@@ -17,6 +21,7 @@ import com.vamsi.xchangerates.app.utils.FORMAT_TYPE
 import com.vamsi.xchangerates.app.utils.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Call
 import javax.inject.Inject
 
 class WorldExchangeRatesRepositoryImpl @Inject constructor(
@@ -45,18 +50,32 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchCurrencies(): List<CurrencyUIModel> {
+    override suspend fun fetchCurrencies(): Either<Failure, List<CurrencyUIModel>> {
         initializeDatabase()
-        networkUtils.isConnectedToInternet?.let {
-            if (it) {
+        return when(networkUtils.isConnectedToInternet) {
+            true -> {
                 val currencyResponse = worldExchangeRatesService.fetchCurrencies(
                     BuildConfig.GRADLE_CURRENCY_API_KEY,
                     FORMAT_TYPE
                 )
                 insertCurrencyResponse(getCurrencyListFromResponse(currencyResponse))
+                Right(getCurrenciesFromDatabase())
             }
+            false, null -> Left(Failure.NetworkConnection)
         }
-        return getCurrenciesFromDatabase()
+    }
+
+
+    private fun <T, R> request(call: Call<T>, transform: (T) -> R, default: T): Either<Failure, R> {
+        return try {
+            val response = call.execute()
+            when (response.isSuccessful) {
+                true -> Right(transform((response.body() ?: default)))
+                false -> Left(Failure.ServerError)
+            }
+        } catch (exception: Throwable) {
+            Left(Failure.ServerError)
+        }
     }
 
     override suspend fun insertCurrencyResponse(currencyList: List<CurrencyResponseEntity>) {

@@ -19,7 +19,7 @@ abstract class UseCase<out Type, in Params> where Type : Any {
     operator fun invoke(params: Params, onResult: (Either<Failure, Type>) -> Unit = {}) {
         runBlocking {
             val job = async { run(params) }
-            launch(Dispatchers.Main) { onResult(job.await()) }
+            onResult(job.await())
         }
     }
 

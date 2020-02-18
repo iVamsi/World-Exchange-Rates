@@ -33,4 +33,7 @@
     <string name="remove_favorite">Remove as favorite?</string>
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
+
+    <string name="failure_network_connection">No Network Connection.</string>
+    <string name="failure_server_error">Server Error</string>
 </resources>
