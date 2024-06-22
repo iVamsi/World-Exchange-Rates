@@ -1,37 +1,76 @@
-import com.android.build.gradle.internal.dsl.BaseFlavor
-import com.android.build.gradle.internal.dsl.DefaultConfig
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
-
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    kotlin("android.extensions")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
-    compileSdkVersion(AppConfig.COMPILE_SDK_VERSION)
-    dataBinding.isEnabled = true
-    defaultConfig {
-        applicationId = AppConfig.ID
-        minSdkVersion(AppConfig.MIN_SDK_VERSION)
-        targetSdkVersion(AppConfig.TARGET_SDK_VERSION)
-        versionCode = AppConfig.VERSION_CODE
-        versionName = AppConfig.VERSION_NAME
-        testInstrumentationRunner = AppConfig.TEST_INSTRUMENTATION_RUNNER
-        vectorDrawables.useSupportLibrary = AppConfig.SUPPORT_LIBRARY_VECTOR_DRAWABLES
+    namespace = "com.vamsi.xchangerates.app"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
-        buildConfigFieldFromGradleProperty("currencyApiKey")
+    defaultConfig {
+        applicationId = "com.vamsi.xchangerates.app"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = 50
+        versionName = "6.0"
+
+        testInstrumentationRunner =
+            "com.example.android.architecture.blueprints.todoapp.CustomTestRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += "room.incremental" to "true"
+            }
+        }
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+        getByName("debug") {
+            isMinifyEnabled = false
+            enableUnitTestCoverage = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            testProguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguardTest-rules.pro"
             )
         }
+
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            testProguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguardTest-rules.pro"
+            )
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests {
+        isIncludeAndroidResources = true
+
+        all { test ->
+            with(test) {
+                testLogging {
+                    events = setOf(
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+                    )
+                }
+            }
+        }
+    }
+
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -40,71 +79,127 @@ android {
     }
 
     kotlinOptions {
-        // "this" is currently lacking a proper type
-        // See: https://youtrack.jetbrains.com/issue/KT-31077
-        val options = this as? KotlinJvmOptions
-        options?.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = "1.8"
+    }
+
+    packaging {
+        resources.apply {
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
+        }
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+            freeCompilerArgs += "-opt-in=kotlin.Experimental"
+        }
     }
 }
 
+/*
+ Dependency versions are defined in the top level build.gradle file. This helps keeping track of
+ all versions in a single place. This improves readability and helps managing project complexity.
+ */
 dependencies {
-    kapt("androidx.room:room-compiler:${Versions.roomVersion}")
-    implementation("androidx.room:room-runtime:${Versions.roomVersion}")
-    implementation("androidx.room:room-rxjava2:${Versions.roomVersion}")
-    implementation("androidx.room:room-ktx:${Versions.roomVersion}")
 
-    implementation(LibraryDependencies.NAVIGATION_FRAGMENT)
-    implementation(LibraryDependencies.NAVIGATION_UI_KTX)
-    implementation("androidx.appcompat:appcompat:${Versions.supportLibraryVersion}")
-    implementation("androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}")
-    implementation("androidx.core:core-ktx:${Versions.ktxVersion}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleVersion}")
-    implementation("androidx.recyclerview:recyclerview:${Versions.recyclerViewVersion}")
-    implementation("com.github.bumptech.glide:glide:${Versions.glideVersion}")
-    kapt("com.github.bumptech.glide:compiler:${Versions.glideVersion}")
-    implementation("com.google.android.material:material:${Versions.materialVersion}")
-    implementation("com.google.code.gson:gson:${Versions.gsonVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesVersion}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-beta01")
+    // App dependencies
+    implementation(libs.androidx.annotation)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
+    implementation(libs.androidx.test.espresso.idling.resources)
 
-// Testing dependencies
-    androidTestImplementation("androidx.arch.core:core-testing:${Versions.coreTestingVersion}")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:${Versions.espressoVersion}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espressoVersion}")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:${Versions.espressoVersion}")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:${Versions.uiAutomatorVersion}")
-    testImplementation("junit:junit:${Versions.junitVersion}")
+    // Architecture Components
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
 
-    implementation("com.google.dagger:dagger:${Versions.daggerVersion}")
-    kapt("com.google.dagger:dagger-compiler:${Versions.daggerVersion}")
-    kapt("com.google.dagger:dagger-android-processor:${Versions.daggerVersion}")
-    implementation("com.google.dagger:dagger-android-support:${Versions.daggerVersion}")
+    // Hilt
+    implementation(libs.hilt.android.core)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
 
-    implementation("io.reactivex.rxjava2:rxandroid:2.0.2")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.9")
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
 
-    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofitVersion}")
-    implementation("com.squareup.okhttp3:okhttp:4.2.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:2.4.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.2.0")
-}
+    // Coil
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
 
-fun BaseFlavor.buildConfigFieldFromGradleProperty(gradlePropertyName: String) {
-    val propertyValue = project.properties[gradlePropertyName] as? String
-    checkNotNull(propertyValue) { "Gradle property $gradlePropertyName is null" }
+    // Jetpack Compose
+    val composeBom = platform(libs.androidx.compose.bom)
 
-    val androidResourceName = "GRADLE_${gradlePropertyName.toSnakeCase()}".toUpperCase()
-    buildConfigField("String", androidResourceName, propertyValue)
-}
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.compiler)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.foundation.core)
+    implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.material.core)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.accompanist.appcompat.theme)
+    implementation(libs.accompanist.swiperefresh)
 
-fun String.toSnakeCase() = this.split(Regex("(?=[A-Z])")).joinToString("_") { it.toLowerCase() }
+    debugImplementation(composeBom)
+    debugImplementation(libs.androidx.compose.ui.tooling.core)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-fun DefaultConfig.buildConfigField(name: String, value: Set<String>) {
-    // Generates String that holds Java String Array code
-    val strValue = value.joinToString(prefix = "{", separator = ",", postfix = "}", transform = { "\"$it\"" })
-    buildConfigField("String", name, strValue)
+    // Dependencies for local unit tests
+    testImplementation(composeBom)
+    testImplementation(libs.junit4)
+    testImplementation(libs.androidx.archcore.testing)
+    testImplementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.navigation.testing)
+    testImplementation(libs.androidx.test.espresso.core)
+    testImplementation(libs.androidx.test.espresso.contrib)
+    testImplementation(libs.androidx.test.espresso.intents)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.androidx.compose.ui.test.junit)
+
+    // JVM tests - Hilt
+    testImplementation(libs.hilt.android.testing)
+    kaptTest(libs.hilt.compiler)
+
+    // Dependencies for Android unit tests
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.junit4)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit)
+
+    // AndroidX Test - JVM testing
+    testImplementation(libs.androidx.test.core.ktx)
+    testImplementation(libs.androidx.test.ext)
+    testImplementation(libs.androidx.test.rules)
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation(libs.androidx.test.core.ktx)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.androidx.archcore.testing)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.contrib)
+    androidTestImplementation(libs.androidx.test.espresso.intents)
+    androidTestImplementation(libs.androidx.test.espresso.idling.resources)
+    androidTestImplementation(libs.androidx.test.espresso.idling.concurrent)
+
+    // AndroidX Test - Hilt testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
 }
