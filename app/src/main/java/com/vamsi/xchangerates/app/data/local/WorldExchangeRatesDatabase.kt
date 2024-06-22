@@ -1,10 +1,11 @@
 package com.vamsi.xchangerates.app.data.local
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.vamsi.xchangerates.app.utils.DATABASE_NAME
+import com.vamsi.xchangerates.app.utils.Constants.DATABASE_NAME
 
 /**
  * The Room database for this app
@@ -15,11 +16,18 @@ abstract class WorldExchangeRatesDatabase : RoomDatabase() {
 
     companion object {
 
-        fun buildDatabase(context: Context): WorldExchangeRatesDatabase = Room.databaseBuilder(
-            context.applicationContext,
-            WorldExchangeRatesDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+        @Volatile
+        private var instance: WorldExchangeRatesDatabase? = null
+
+        fun getDatabase(context: Context): WorldExchangeRatesDatabase =
+            instance ?: synchronized(this) {
+                instance ?: Room.databaseBuilder(
+                    context.applicationContext,
+                    WorldExchangeRatesDatabase::class.java,
+                    DATABASE_NAME
+                ).fallbackToDestructiveMigration()
+                    .build().also { instance = it }
+            }
 
         fun getCurrencyResponseEntities(): List<CurrencyResponseEntity> {
             val mutableCurrencyList = mutableListOf<CurrencyResponseEntity>()

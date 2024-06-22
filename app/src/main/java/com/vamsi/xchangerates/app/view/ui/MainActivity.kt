@@ -1,23 +1,43 @@
 package com.vamsi.xchangerates.app.view.ui
 
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vamsi.xchangerates.app.R
 import com.vamsi.xchangerates.app.databinding.ActivityMainBinding
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navController = findNavController(this, R.id.navFragment)
+        val navView: BottomNavigationView = binding.navigationView
 
-        // Set up navigation menu
-        NavigationUI.setupWithNavController(binding.navigationView, navController)
+        // Find the NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navFragment) as NavHostFragment
+
+        // Obtain NavController from NavHostFragment
+        val navController = navHostFragment.navController
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_all_currencies, R.id.navigation_favorite_currencies, R.id.navigation_currency_converter
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 }

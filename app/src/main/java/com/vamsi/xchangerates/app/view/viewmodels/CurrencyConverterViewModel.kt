@@ -8,13 +8,14 @@ import com.vamsi.xchangerates.app.data.repository.WorldExchangeRatesRepository
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.Converter
 import com.vamsi.xchangerates.app.utils.ObservableViewModel
-import io.reactivex.disposables.CompositeDisposable
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
  * The ViewModel for [AllCurrencies].
  */
+@HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
     private val worldExchangeRatesRepository: WorldExchangeRatesRepository
 ) : ObservableViewModel() {
@@ -43,7 +44,6 @@ class CurrencyConverterViewModel @Inject constructor(
 
     private val currencyList = MutableLiveData<List<CurrencyUIModel>>()
     private val currencies = mutableListOf<CurrencyUIModel>()
-    private val compositeDisposable = CompositeDisposable()
 
     init {
         fetchCurrencies()
@@ -88,11 +88,6 @@ class CurrencyConverterViewModel @Inject constructor(
             else -> currencyValue.plus(currValue)
         }
         if (currencyValue == "") currencyValue = "0"
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
     }
 
     @Bindable

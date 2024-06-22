@@ -2,7 +2,7 @@ package com.vamsi.xchangerates.app.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vamsi.xchangerates.app.utils.TABLE_CURRENCY_RESPONSE
+import com.vamsi.xchangerates.app.utils.Constants.TABLE_CURRENCY_RESPONSE
 
 @Entity(tableName = TABLE_CURRENCY_RESPONSE)
 data class CurrencyResponseEntity(

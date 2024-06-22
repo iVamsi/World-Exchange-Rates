@@ -2,7 +2,7 @@ package com.vamsi.xchangerates.app.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.vamsi.xchangerates.app.utils.TABLE_CURRENCIES
+import com.vamsi.xchangerates.app.utils.Constants.TABLE_CURRENCIES
 
 @Entity(tableName = TABLE_CURRENCIES)
 data class Currency(

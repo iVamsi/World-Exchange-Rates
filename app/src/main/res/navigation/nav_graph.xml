@@ -3,19 +3,19 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/allCurrenciesFragment">
+            app:startDestination="@id/navigation_all_currencies">
     <fragment
-        android:id="@+id/allCurrenciesFragment"
+        android:id="@+id/navigation_all_currencies"
         android:name="com.vamsi.xchangerates.app.view.ui.AllCurrenciesFragment"
         tools:layout="@layout/fragment_all_currencies"/>
 
     <fragment
-        android:id="@+id/favoriteCurrenciesFragment"
+        android:id="@+id/navigation_favorite_currencies"
         android:name="com.vamsi.xchangerates.app.view.ui.FavoriteCurrenciesFragment"
         tools:layout="@layout/fragment_favorite_currencies"/>
 
     <fragment
-        android:id="@+id/currencyConverterFragment"
+        android:id="@+id/navigation_currency_converter"
         android:name="com.vamsi.xchangerates.app.view.ui.CurrencyConverterFragment"
         tools:layout="@layout/fragment_currency_converter"/>
 
