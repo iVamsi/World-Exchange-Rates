@@ -2,20 +2,20 @@ package com.vamsi.xchangerates.app.data.local
 
 import android.util.Log
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CacheManagerImpl @Inject constructor() : CacheManager<CurrencyUIModel> {
 
     private val data: ArrayList<CurrencyUIModel> = arrayListOf()
 
-    override fun getData(): Observable<List<CurrencyUIModel>> {
-        return Observable.create<List<CurrencyUIModel>> { emitter ->
+    override fun getData(): Flow<List<CurrencyUIModel>> {
+        return flow {
             if (data.isNotEmpty()) {
                 Log.d("CacheManagerImpl", "From cache")
-                emitter.onNext(data)
+                emit(data)
             }
-            emitter.onComplete()
         }
     }
 

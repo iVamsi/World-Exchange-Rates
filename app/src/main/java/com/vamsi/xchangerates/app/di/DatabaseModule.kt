@@ -1,22 +1,28 @@
 package com.vamsi.xchangerates.app.di
 
 import android.content.Context
-import com.vamsi.xchangerates.app.data.local.CacheManager
-import com.vamsi.xchangerates.app.data.local.CacheManagerImpl
+import com.vamsi.xchangerates.app.data.local.CurrencyDao
 import com.vamsi.xchangerates.app.data.local.WorldExchangeRatesDatabase
-import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule {
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(context: Context) = WorldExchangeRatesDatabase.buildDatabase(context)
+    fun provideDatabase(@ApplicationContext context: Context): WorldExchangeRatesDatabase {
+        return WorldExchangeRatesDatabase.getDatabase(context)
+    }
 
     @Singleton
     @Provides
-    fun provideCacheManager(): CacheManager<CurrencyUIModel> = CacheManagerImpl()
+    fun provideCurrencyDao(database: WorldExchangeRatesDatabase): CurrencyDao {
+        return database.currencyDao()
+    }
 }

@@ -1,8 +1,8 @@
 package com.vamsi.xchangerates.app.data.local
 
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 interface CacheManager<T> {
-    fun getData(): Observable<List<T>>
+    fun getData(): Flow<List<T>>
     fun saveDataInMemory(data: List<T>)
 }

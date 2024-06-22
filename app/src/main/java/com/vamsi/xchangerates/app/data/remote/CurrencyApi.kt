@@ -1,13 +1,16 @@
 package com.vamsi.xchangerates.app.data.remote
 
 import com.vamsi.xchangerates.app.model.CurrencyResponse
-import com.vamsi.xchangerates.app.utils.ACCESS_KEY
-import com.vamsi.xchangerates.app.utils.FORMAT
-import com.vamsi.xchangerates.app.utils.LATEST
+import com.vamsi.xchangerates.app.utils.Constants.ACCESS_KEY
+import com.vamsi.xchangerates.app.utils.Constants.FORMAT
+import com.vamsi.xchangerates.app.utils.Constants.LATEST
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface WorldExchangeRatesService {
+/**
+ * Defines the abstract methods used for interacting with the Currency API.
+ */
+interface CurrencyApi {
 
     @GET(LATEST)
     suspend fun fetchCurrencies(

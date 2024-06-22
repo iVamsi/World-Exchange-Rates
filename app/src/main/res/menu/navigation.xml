@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/allCurrenciesFragment"
+            android:id="@+id/navigation_all_currencies"
             android:icon="@drawable/ic_all_currencies_black_24dp"
             android:title="@string/title_all_currencies"/>
 
     <item
-            android:id="@+id/favoriteCurrenciesFragment"
+            android:id="@+id/navigation_favorite_currencies"
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="@string/title_favorites"/>
 
     <item
-            android:id="@+id/currencyConverterFragment"
+            android:id="@+id/navigation_currency_converter"
             android:icon="@drawable/ic_sync_black_24dp"
             android:title="@string/title_converter"/>
 

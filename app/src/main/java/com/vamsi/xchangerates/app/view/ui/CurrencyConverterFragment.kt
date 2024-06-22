@@ -9,50 +9,47 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.vamsi.xchangerates.app.R
 import com.vamsi.xchangerates.app.databinding.FragmentCurrencyConverterBinding
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
 import com.vamsi.xchangerates.app.utils.OnClickHandler
-import com.vamsi.xchangerates.app.utils.autoCleared
 import com.vamsi.xchangerates.app.utils.observe
-import com.vamsi.xchangerates.app.utils.viewModelProvider
 import com.vamsi.xchangerates.app.view.adapters.CurrencyListAdapter
 import com.vamsi.xchangerates.app.view.viewmodels.CurrencyConverterViewModel
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
+@AndroidEntryPoint
+class CurrencyConverterFragment : Fragment(), OnClickHandler {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    var binding by autoCleared<FragmentCurrencyConverterBinding>()
     lateinit var currency: CurrencyUIModel
     private lateinit var adapter: CurrencyListAdapter
 
     private var isLeftCurrencyClicked = false
-    private lateinit var currencyConverterViewModel: CurrencyConverterViewModel
+    private val currencyConverterViewModel: CurrencyConverterViewModel by viewModels()
     private lateinit var alertDialog: AlertDialog
+
+    private var _binding: FragmentCurrencyConverterBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return DataBindingUtil.inflate<FragmentCurrencyConverterBinding>(
             inflater,
             R.layout.fragment_currency_converter,
             container,
             false
         ).apply {
-            binding = this
+            _binding = this
         }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        currencyConverterViewModel = viewModelProvider(viewModelFactory)
         binding.apply {
             converterTopSection.viewModel = currencyConverterViewModel
             converterBottomSection.clickHandler = this@CurrencyConverterFragment
@@ -70,7 +67,7 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
     }
 
     private fun initCurrencyListDialog(adapter: CurrencyListAdapter) {
-        val builder = AlertDialog.Builder(context!!)
+        val builder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(
             R.layout.currency_list_layout,
             null
@@ -80,7 +77,7 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
         rv.apply {
             addItemDecoration(
                 DividerItemDecoration(
-                    context!!,
+                    requireContext(),
                     DividerItemDecoration.VERTICAL
                 )
             )
@@ -159,5 +156,11 @@ class CurrencyConverterFragment : DaggerFragment(), OnClickHandler {
         )
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
         startActivity(Intent.createChooser(sharingIntent, resources.getString(R.string.share_via)))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }
