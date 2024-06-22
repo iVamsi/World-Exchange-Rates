@@ -1,9 +1,12 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -25,6 +28,8 @@ android {
                 arguments += "room.incremental" to "true"
             }
         }
+
+        buildConfigField("String", "CURRENCY_API_KEY", getApiKey())
     }
 
     buildTypes {
@@ -71,6 +76,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        dataBinding = true
     }
 
     compileOptions {
@@ -113,10 +119,19 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
     implementation(libs.androidx.test.espresso.idling.resources)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.constraintlayout)
 
     // Architecture Components
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.databinding.common)
+    implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment)
     ksp(libs.room.compiler)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
@@ -134,6 +149,9 @@ dependencies {
     // Coil
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
+
+    // Glide
+    implementation(libs.glide)
 
     // Jetpack Compose
     val composeBom = platform(libs.androidx.compose.bom)
@@ -202,4 +220,10 @@ dependencies {
     // AndroidX Test - Hilt testing
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.compiler)
+}
+
+fun getApiKey(): String {
+    val localProperties = Properties()
+    localProperties.load(rootProject.file("local.properties").inputStream())
+    return localProperties.getProperty("currencyApiKey")
 }

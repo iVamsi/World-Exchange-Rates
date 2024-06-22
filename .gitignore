@@ -6,3 +6,10 @@
 .idea/other.xml
 .idea/studiobot.xml
 .idea/vcs.xml
+.idea/.name
+.idea/appInsightsSettings.xml
+.idea/compiler.xml
+.idea/deploymentTargetSelector.xml
+.idea/kotlinc.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml

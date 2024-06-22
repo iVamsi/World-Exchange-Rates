@@ -1,23 +1,30 @@
 package com.vamsi.xchangerates.app.view.ui
 
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.vamsi.xchangerates.app.R
-import com.vamsi.xchangerates.app.databinding.ActivityMainBinding
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        val navController = findNavController(this, R.id.navFragment)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navFragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        // Set up navigation menu
-        NavigationUI.setupWithNavController(binding.navigationView, navController)
+        setupActionBarWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

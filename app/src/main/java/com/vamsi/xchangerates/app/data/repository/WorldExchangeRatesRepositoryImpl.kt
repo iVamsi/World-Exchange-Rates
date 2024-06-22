@@ -1,47 +1,47 @@
 package com.vamsi.xchangerates.app.data.repository
 
-import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.google.gson.stream.JsonReader
 import com.vamsi.xchangerates.app.BuildConfig
-import com.vamsi.xchangerates.app.data.local.Currency
+import com.vamsi.xchangerates.app.data.local.CurrencyDao
 import com.vamsi.xchangerates.app.data.local.CurrencyResponseEntity
 import com.vamsi.xchangerates.app.data.local.WorldExchangeRatesDatabase
-import com.vamsi.xchangerates.app.data.remote.WorldExchangeRatesService
+import com.vamsi.xchangerates.app.data.remote.CurrencyApi
+import com.vamsi.xchangerates.app.di.IoDispatcher
+import com.vamsi.xchangerates.app.model.CurrencyLocal
 import com.vamsi.xchangerates.app.model.CurrencyResponse
 import com.vamsi.xchangerates.app.model.CurrencyUIModel
-import com.vamsi.xchangerates.app.utils.CURRENCY_DATA_FILENAME
-import com.vamsi.xchangerates.app.utils.FORMAT_TYPE
+import com.vamsi.xchangerates.app.model.toCurrency
+import com.vamsi.xchangerates.app.utils.Constants.CURRENCY_DATA_FILENAME
+import com.vamsi.xchangerates.app.utils.Constants.FORMAT_TYPE
+import com.vamsi.xchangerates.app.utils.ContextUtil
 import com.vamsi.xchangerates.app.utils.NetworkUtils
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class WorldExchangeRatesRepositoryImpl @Inject constructor(
-    private val worldExchangeRatesService: WorldExchangeRatesService,
-    private val worldExchangeRatesDatabase: WorldExchangeRatesDatabase,
+    private val currencyApi: CurrencyApi,
     private val networkUtils: NetworkUtils,
-    private val context: Context,
-    private val gson: Gson
+    private val contextUtil: ContextUtil,
+    private val currencyDao: CurrencyDao,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WorldExchangeRatesRepository {
 
     override suspend fun getCountOfCurrenciesInDatabase(): Int {
-        return withContext(Dispatchers.IO) {
-            worldExchangeRatesDatabase.currencyDao().getCurrenciesTotal()
+        return withContext(ioDispatcher) {
+            currencyDao.getCurrenciesTotal()
         }
     }
 
     override suspend fun getFavoriteCurrencies(): List<CurrencyUIModel> {
-        return withContext(Dispatchers.IO) {
-            worldExchangeRatesDatabase.currencyDao().getCurrencyFavoritesForUI()
+        return withContext(ioDispatcher) {
+            currencyDao.getCurrencyFavoritesForUI()
         }
     }
 
     override suspend fun updateCurrencyFavorite(currencyId: String, favorite: String) {
-        withContext(Dispatchers.IO) {
-            worldExchangeRatesDatabase.currencyDao().updateCurrencyFavorite(currencyId, favorite)
+        withContext(ioDispatcher) {
+            currencyDao.updateCurrencyFavorite(currencyId, favorite)
         }
     }
 
@@ -49,8 +49,8 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
         initializeDatabase()
         networkUtils.isConnectedToInternet?.let {
             if (it) {
-                val currencyResponse = worldExchangeRatesService.fetchCurrencies(
-                    BuildConfig.GRADLE_CURRENCY_API_KEY,
+                val currencyResponse = currencyApi.fetchCurrencies(
+                    BuildConfig.CURRENCY_API_KEY,
                     FORMAT_TYPE
                 )
                 insertCurrencyResponse(getCurrencyListFromResponse(currencyResponse))
@@ -60,8 +60,8 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertCurrencyResponse(currencyList: List<CurrencyResponseEntity>) {
-        withContext(Dispatchers.IO) {
-            worldExchangeRatesDatabase.currencyDao().updateCurrencies(currencyList)
+        withContext(ioDispatcher) {
+            currencyDao.updateCurrencies(currencyList)
         }
     }
 
@@ -74,8 +74,8 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCurrenciesFromDatabase(): List<CurrencyUIModel> {
-        return withContext(Dispatchers.IO) {
-            worldExchangeRatesDatabase.currencyDao().getCurrenciesForUI()
+        return withContext(ioDispatcher) {
+            currencyDao.getCurrenciesForUI()
         }
     }
 
@@ -86,23 +86,16 @@ class WorldExchangeRatesRepositoryImpl @Inject constructor(
 
     override suspend fun initializeDatabase() {
 
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             if (getCountOfCurrenciesInDatabase() == 0) {
 
                 initCurrencyEntitiesInDatabase()
 
-                val currencyType = object : TypeToken<List<Currency>>() {}.type
-                var jsonReader: JsonReader? = null
+                val json = Json { ignoreUnknownKeys = true }
 
-                try {
-                    val inputStream = context.assets.open(CURRENCY_DATA_FILENAME)
-                    jsonReader = JsonReader(inputStream.reader())
-                    val currencyList: List<Currency> = gson.fromJson(jsonReader, currencyType)
-                    worldExchangeRatesDatabase.currencyDao().insertAllCurrencies(currencyList)
-                } catch (ex: Exception) {
-                    Log.e("CurrencyRepository", "Error initializing database")
-                } finally {
-                    jsonReader?.close()
+                contextUtil.getContext().assets.open(CURRENCY_DATA_FILENAME).use { inputStream ->
+                    val currencyList: List<CurrencyLocal> = json.decodeFromString(inputStream.bufferedReader().use { it.readText() })
+                    currencyDao.insertAllCurrencies(currencyList.map { it.toCurrency() })
                 }
             }
         }

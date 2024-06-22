@@ -1,10 +1,12 @@
 package com.vamsi.xchangerates.app.model
 
-import com.google.gson.annotations.SerializedName
-import com.vamsi.xchangerates.app.utils.RATES
-import com.vamsi.xchangerates.app.utils.SUCCESS
+import com.vamsi.xchangerates.app.utils.Constants.RATES
+import com.vamsi.xchangerates.app.utils.Constants.SUCCESS
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CurrencyResponse(
-    @SerializedName(SUCCESS) val isSuccess: Boolean,
-    @SerializedName(RATES) val currencyQuotes: Map<String, Double>
+    @SerialName(value = SUCCESS) val isSuccess: Boolean,
+    @SerialName(value = RATES) val currencyQuotes: Map<String, Double>
 )
